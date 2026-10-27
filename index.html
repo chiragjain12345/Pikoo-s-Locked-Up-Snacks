@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Pikoo's Locked up Snacks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=202" />
+</head>
+<body>
+  <div id="stage">
+
+    <!-- ============ SCREEN 1 : TITLE ============ -->
+    <!-- ============ COVER PAGE ============ -->
+    <section class="screen active" id="screen-cover">
+      <!-- Everything that sits on the picture moves with it, so nothing can drift or double up -->
+      <div class="bg cover-bg" style="background-image:url(assets/images/cover.png?v=202)">
+        <div class="cover-title-shine" aria-hidden="true"></div>
+        <div class="cover-twinkles" id="cover-twinkles" aria-hidden="true"></div>
+        <!-- the Start button painted in the picture is the tap area; glow + shine are drawn on top of it -->
+        <button class="cover-start" id="cover-start" aria-label="Start"></button>
+      </div>
+      <div class="bubbles" aria-hidden="true"></div>
+    </section>
+
+    <section class="screen" id="screen-title">
+      <div class="cam" id="cam-title">
+        <div class="bg slow-zoom" style="background-image:url(assets/images/screen1_title_bg.png)"><img class="title-turtle" src="assets/images/turtle_title.png?v=202" alt="" /></div>
+      </div>
+      <div class="bubbles" aria-hidden="true"></div>
+      <h1 class="ost-title" hidden>Pikoo's Locked up Snacks</h1>
+      <button class="btn btn-primary btn-start" id="btn-start">Start &rsaquo;</button>
+      <button class="btn btn-primary btn-next btn-gone" id="next-title">Next &rsaquo;</button>
+    </section>
+
+    <!-- ============ SCREEN 2 : STORY 1 — WHAT HAPPENED ============ -->
+    <section class="screen" id="screen-story1">
+      <div class="bg kenburns" style="background-image:url(assets/images/screen2_story_bg.png)"></div>
+      <div class="bubbles" aria-hidden="true"></div>
+      <div class="actor-pikoo" id="pikoo-actor"><img src="assets/images/char_pikoo.png" alt="Pikoo" /></div>
+      <div class="speech" id="speech-story1">
+        <img class="speech-bg" alt="" />
+        <span class="speaker"></span>
+        <p class="line"></p>
+      </div>
+      <button class="btn btn-primary btn-next btn-gone" id="next-story1">Next &rsaquo;</button>
+    </section>
+
+    <!-- ============ SCREEN 3 : STORY 2 — WHAT TO DO ============ -->
+    <section class="screen" id="screen-story2">
+      <div class="zoom-wrap" id="zoom-wrap">
+        <div class="bg" style="background-image:url(assets/images/screen3_story_bg_no_neeli.png)"></div>
+        <div class="neeli-actor" id="neeli-actor"><div class="neeli-body fig"><img class="neeli-char" src="assets/images/char_neeli.png" alt="Neeli" /></div></div>
+        <div class="lock-ring" data-lock="1" style="left:1068px;top:300px"><span>1</span></div>
+        <div class="lock-ring" data-lock="2" style="left:1068px;top:490px"><span>2</span></div>
+        <div class="lock-ring" data-lock="3" style="left:1068px;top:680px"><span>3</span></div>
+      </div>
+      <div class="bubbles" aria-hidden="true"></div>
+      <div class="speech" id="speech-story2">
+        <img class="speech-bg" alt="" />
+        <span class="speaker"></span>
+        <p class="line"></p>
+      </div>
+      <button class="btn btn-primary btn-next btn-gone" id="next-story2">Next &rsaquo;</button>
+    </section>
+
+    <!-- ============ SHELF : lock 1 opens, then zoom into lock 2 ============ -->
+    <section class="screen" id="screen-shelf">
+      <div class="zoom-wrap" id="zoom-wrap-shelf">
+        <div class="bg" id="shelf-bg"></div>
+        <div class="lock1-sprite" id="lock1-sprite"><div class="shackle"></div><div class="body"></div></div>
+        <div class="lock-ring" id="ring-next" style="left:1068px;top:490px"><span>2</span></div>
+        <div class="neeli-actor"><div class="neeli-body fig"><img class="neeli-char" src="assets/images/char_neeli.png" alt="Neeli" /></div></div>
+        <div class="pikoo-from-right" id="pikoo-shelf"><img src="assets/images/char_pikoo.png" alt="Pikoo" /></div>
+      </div>
+      <div class="bubbles" aria-hidden="true"></div>
+      <div class="speech" id="speech-shelf-neeli">
+        <img class="speech-bg" alt="" />
+        <span class="speaker"></span>
+        <p class="line"></p>
+      </div>
+      <div class="speech" id="speech-shelf-pikoo">
+        <img class="speech-bg" alt="" />
+        <span class="speaker"></span>
+        <p class="line"></p>
+      </div>
+    </section>
+
+    <!-- ============ ENDING : who locked it? + the cafe opens (js/ending.js) ============ -->
+    <section class="screen" id="screen-reveal">
+      <div class="cam" id="cam-reveal">
+        <div class="bg" style="background-image:url(assets/images/screen3_story_bg_lock3_open.png)"></div>
+        <img class="shelf-open" id="shelf-open" src="assets/images/shelf_open.png" alt="" />
+        <div class="glass-door-track"><div class="glass-door" id="glass-door"></div></div>
+        <img class="shells-front" src="assets/images/shells_front.png?v=202" alt="" />
+        <div class="neeli-actor" id="neeli-end"><div class="neeli-body fig"><img class="neeli-char" src="assets/images/char_neeli.png" alt="Neeli" /></div></div>
+        <div class="pikoo-from-right" id="pikoo-end"><img src="assets/images/char_pikoo.png" alt="Pikoo" /></div>
+        <div class="note" id="note"><span>Snacks arranged<br />and locked.<br /><b>- Pikoo</b></span></div>
+      </div>
+      <div class="bubbles" aria-hidden="true"></div>
+      <div class="speech" id="speech-end"><img class="speech-bg" alt="" /><span class="speaker"></span><p class="line"></p></div>
+    </section>
+
+    <section class="screen" id="screen-happy">
+      <div class="cam" id="cam-happy">
+        <div class="bg" style="background-image:url(assets/images/cafe_happy_ending.png)"></div>
+        <div class="glass-shimmer" aria-hidden="true"></div>
+        <div class="crowd" id="crowd"></div>
+        <div class="happy-fx" id="happy-fx" aria-hidden="true"></div>
+        <div class="open-sign" id="open-sign"><span>OPEN</span></div>
+        <img class="cafe-signboard" src="assets/images/cafe_signboard.png" alt="" />
+      </div>
+      <div class="doors" id="doors"><div class="door left"></div><div class="door right"></div></div>
+      <div class="bubbles" aria-hidden="true"></div>
+      <div class="speech" id="speech-happy"><img class="speech-bg" alt="" /><span class="speaker"></span><p class="line"></p></div>
+      <div class="ost end-banner" id="end-banner" hidden></div>
+      <video class="end-video" id="end-video" src="assets/videos/last%20screen%20video.mp4" playsinline preload="auto"></video>
+    </section>
+
+    <!-- ============ SCREEN 4+ : GAME — LOCK 1, THE PINS ============ -->
+    <section class="screen" id="screen-game">
+      <div class="bg" style="background-image:url(assets/images/game_bg.png)"></div>
+      <div class="bubbles" aria-hidden="true"></div>
+
+      <!-- Top instruction panel -->
+      <div class="top-panel" id="top-panel">
+        <img class="instruction-panel" src="assets/images/instruction_panel.png" alt="" />
+        <img class="avatar" id="avatar" src="assets/images/neeli_avatar.png" alt="Neeli" />
+        <div class="speaker-chip" id="speaker-chip">Neeli</div>
+        <p class="instruction-text" id="instruction-text"></p>
+      </div>
+
+      <!-- Lock board -->
+      <div class="board" id="board">
+        <img class="lock-board" src="assets/images/lock_board.png" alt="" />
+        <div class="board-shine"></div>
+      </div>
+
+      <button class="choice" id="choice-a" style="left:397px;top:537px">
+        <img src="assets/images/number_button.png" alt="" />
+        <span class="num"></span>
+      </button>
+      <button class="choice" id="choice-b" style="left:890.15px;top:532.9px">
+        <img src="assets/images/number_button.png" alt="" />
+        <span class="num"></span>
+      </button>
+
+      <button class="btn btn-primary btn-begin" id="btn-begin">Next &rsaquo;</button>
+
+      <div id="pins"></div>
+
+      <!-- Lock 2: The Code (js/lock2.js) -->
+      <div class="code-panel" id="code-panel">
+        <div class="code-tag" id="code-tag">BIGGEST</div>
+        <div class="code-tag smallest" id="code-tag2">SMALLEST</div>
+      </div>
+      <div id="code-windows"></div>
+      <div class="shell-tray" id="shell-tray"></div>
+      <div id="shells"></div>
+      <div class="note fly-note" id="fly-note"><span>Snacks arranged<br />and locked.<br /><b>- Pikoo</b></span></div>
+      <!-- Lock 3: The Shell-Lights (js/lock3.js) -->
+      <div class="bulbs" id="bulbs"></div>
+      <div class="code-tag order-tag" id="order-tag">SMALL &rarr; BIG</div>
+      <div id="order-slots"></div>
+      <div id="order-cards"></div>
+
+      <button class="btn-enter" id="btn-enter" aria-label="Enter">
+        <span class="enter-clam"><span class="enter-pearl"></span></span>
+        <span class="enter-label">Enter</span>
+        <span class="enter-bubble b1"></span><span class="enter-bubble b2"></span><span class="enter-bubble b3"></span>
+      </button>
+
+      <!-- Bottom panels -->
+      <div class="level-panel">
+        <img src="assets/images/level_panel.png" alt="" />
+        <span>Lock 1 - The Pins</span>
+      </div>
+      <div class="progress-panel" id="progress-panel">
+        <img src="assets/images/progress_panel.png" alt="" />
+        <div class="sockets" id="sockets"></div>
+        <span class="progress-text" id="progress-text">0 / 7 pins released</span>
+      </div>
+
+      <div class="hand" id="hand" aria-hidden="true">👆</div>
+
+      <!-- Hint screen -->
+      <div class="overlay" id="hint">
+        <div class="hint-card">
+          <div class="hint-title">Neeli's Hint</div>
+          <p class="hint-line">Count the digits first. Same length? Then compare the digits from the left until they are different.</p>
+          <div class="hint-rows" id="hint-rows"></div>
+          <p class="hint-verdict" id="hint-verdict"></p>
+          <button class="btn btn-primary" id="btn-hint-ok">Got it!</button>
+        </div>
+      </div>
+
+      <!-- Lock open celebration -->
+      <div class="overlay" id="win">
+        <div class="confetti" id="confetti"></div>
+        <div class="win-card">
+          <div class="win-lock">🔓</div>
+          <h2 id="win-title">Lock 1 is open!</h2>
+          <p id="win-sub">7 / 7 pins released</p>
+          <div class="stars"><span>★</span><span>★</span><span>★</span></div>
+          <div class="win-lines" id="win-lines"></div>
+          <button class="btn btn-primary btn-gone" id="btn-win-next">On to the second lock &rsaquo;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Transition layer (story → game) -->
+    <div class="transition" id="transition">
+      <div class="iris"></div>
+      <div class="trans-bubbles"></div>
+    </div>
+
+    <button class="sound-toggle" id="sound-toggle" aria-label="Toggle sound">🔊</button>
+  </div>
+
+  <!-- TEST MENU (testing only) — delete this line and js/debug-menu.js to remove it -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="js/debug-menu.js?v=202"></script>
+  <script src="js/sound.js?v=202"></script>
+  <script src="js/game.js?v=202"></script>
+  <script src="js/lock2.js?v=202"></script>
+  <script src="js/lock3.js?v=202"></script>
+  <script src="js/ending.js?v=202"></script>
+  <script src="js/fx.js?v=202"></script>
+  <script src="js/blink.js?v=202"></script>
+  <script src="js/talkers.js?v=202"></script>
+  <script src="js/avatar.js?v=202"></script>
+</body>
+</html>

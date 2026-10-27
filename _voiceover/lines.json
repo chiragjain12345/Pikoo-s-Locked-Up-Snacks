@@ -1,0 +1,742 @@
+[
+ {
+  "clip": "cover_title",
+  "who": "Title",
+  "text": "Pikoo's... Locked-Up Snacks!",
+  "ids": [
+   "cover_title"
+  ],
+  "where": "Cover",
+  "spoken_en": "Pikoo's... Locked-Up Snacks!"
+ },
+ {
+  "clip": "s1_narrator",
+  "who": "Narrator",
+  "text": "At the Shellfish Cafe, somebody has locked the snack cupboard... And the café needs to be opened for the day!",
+  "ids": [
+   "s1_narrator"
+  ],
+  "where": "Story 1",
+  "spoken_en": "At the Shellfish Cafe, somebody has locked the snack cupboard... And the café needs to be opened for the day!"
+ },
+ {
+  "clip": "s2_shells",
+  "who": "Mr. Shells",
+  "text": "Someone locked away all the snacks. Who was it?",
+  "ids": [
+   "s2_shells"
+  ],
+  "where": "Story 2",
+  "spoken_en": "Someone locked away all the snacks. Who was it?"
+ },
+ {
+  "clip": "s2_pikoo",
+  "who": "Pikoo",
+  "text": "Wasn't me! ...Probably.",
+  "ids": [
+   "s2_pikoo"
+  ],
+  "where": "Story 2",
+  "spoken_en": "Wasn't me! ...Probably."
+ },
+ {
+  "clip": "s3_neeli",
+  "who": "Neeli",
+  "text": "There are three locks... that means we have to solve all three levels to open up the snack shelf and to find out WHO locked the snacks.",
+  "ids": [
+   "s3_neeli"
+  ],
+  "where": "Story 3",
+  "spoken_en": "There are three locks... that means we have to solve all three levels to open up the snack shelf and to find out WHO locked the snacks."
+ },
+ {
+  "clip": "howto_pikoo",
+  "who": "Pikoo",
+  "text": "Seven little pins. Tap the bigger number and a pin pops loose!",
+  "ids": [
+   "howto_pikoo"
+  ],
+  "where": "Lock 1 how-to",
+  "spoken_en": "Seven little pins. Tap the bigger number and a pin pops loose!"
+ },
+ {
+  "clip": "instruction",
+  "who": "Neeli",
+  "text": "Tap the bigger number - a pin pops loose.",
+  "ids": [
+   "instruction"
+  ],
+  "where": "Lock 1 instruction",
+  "spoken_en": "Tap the bigger number - a pin pops loose."
+ },
+ {
+  "clip": "wrong_1",
+  "who": "Neeli",
+  "text": "Oops! Try Again.",
+  "ids": [
+   "wrong_1"
+  ],
+  "where": "All locks, 1st wrong",
+  "spoken_en": "Oops! Try Again."
+ },
+ {
+  "clip": "wrong_2_hint",
+  "who": "Neeli",
+  "text": "Count the digits first. Same length? Then compare the digits from the left until they are different.",
+  "ids": [
+   "wrong_2_hint"
+  ],
+  "where": "Lock 1, 2nd wrong",
+  "spoken_en": "Count the digits first. Same length? Then compare the digits from the left until they are different."
+ },
+ {
+  "clip": "idle",
+  "who": "Neeli",
+  "text": "Take your time - tap the one you think is right.",
+  "ids": [
+   "idle"
+  ],
+  "where": "All locks, idle 10 s",
+  "spoken_en": "Take your time - tap the one you think is right."
+ },
+ {
+  "clip": "l1_correct",
+  "who": "Pikoo",
+  "text": "Pop! First pin open - easy!",
+  "ids": [
+   "l1_correct"
+  ],
+  "where": "Lock 1 pin 1 correct",
+  "spoken_en": "Pop! First pin open - easy!"
+ },
+ {
+  "clip": "l2_correct",
+  "who": "Neeli",
+  "text": "Same length - you checked the front. Good.",
+  "ids": [
+   "l2_correct"
+  ],
+  "where": "Lock 1 pin 2 correct",
+  "spoken_en": "Same length - you checked the front. Good."
+ },
+ {
+  "clip": "l3_correct",
+  "who": "Pikoo",
+  "text": "Another one loose!",
+  "ids": [
+   "l3_correct"
+  ],
+  "where": "Lock 1 pin 3 correct",
+  "spoken_en": "Another one loose!"
+ },
+ {
+  "clip": "l4_correct",
+  "who": "Neeli",
+  "text": "The big 9 did not fool you. Nice.",
+  "ids": [
+   "l4_correct"
+  ],
+  "where": "Lock 1 pin 4 correct",
+  "spoken_en": "The big nine did not fool you. Nice."
+ },
+ {
+  "clip": "l5_correct",
+  "who": "Pikoo",
+  "text": "So close - but you got it!",
+  "ids": [
+   "l5_correct"
+  ],
+  "where": "Lock 1 pin 5 correct",
+  "spoken_en": "So close - but you got it!"
+ },
+ {
+  "clip": "l6_correct",
+  "who": "Pikoo",
+  "text": "Whoa, a six-digit one - pop!",
+  "ids": [
+   "l6_correct"
+  ],
+  "where": "Lock 1 pin 6 correct",
+  "spoken_en": "Whoa, a six-digit one - pop!"
+ },
+ {
+  "clip": "l7_correct",
+  "who": "Neeli",
+  "text": "Last pin. Lock one is open!",
+  "ids": [
+   "l7_correct"
+  ],
+  "where": "Lock 1 pin 7 correct",
+  "spoken_en": "Last pin. Lock one is open!"
+ },
+ {
+  "clip": "l1_hand",
+  "who": "Neeli",
+  "text": "The bigger one is 48,210 - tap it.",
+  "ids": [
+   "l1_hand"
+  ],
+  "where": "Lock 1 pin 1, 3rd wrong",
+  "spoken_en": "The bigger one is forty-eight thousand two hundred ten - tap it."
+ },
+ {
+  "clip": "l2_hand",
+  "who": "Neeli",
+  "text": "The bigger one is 57,282 - tap it.",
+  "ids": [
+   "l2_hand"
+  ],
+  "where": "Lock 1 pin 2, 3rd wrong",
+  "spoken_en": "The bigger one is fifty-seven thousand two hundred eighty-two - tap it."
+ },
+ {
+  "clip": "l3_hand",
+  "who": "Neeli",
+  "text": "The bigger one is 46,310 - tap it.",
+  "ids": [
+   "l3_hand"
+  ],
+  "where": "Lock 1 pin 3, 3rd wrong",
+  "spoken_en": "The bigger one is forty-six thousand three hundred ten - tap it."
+ },
+ {
+  "clip": "l4_hand",
+  "who": "Neeli",
+  "text": "The bigger one is 12,040 - tap it.",
+  "ids": [
+   "l4_hand"
+  ],
+  "where": "Lock 1 pin 4, 3rd wrong",
+  "spoken_en": "The bigger one is twelve thousand forty - tap it."
+ },
+ {
+  "clip": "l5_hand",
+  "who": "Neeli",
+  "text": "The bigger one is 90,000 - tap it.",
+  "ids": [
+   "l5_hand"
+  ],
+  "where": "Lock 1 pin 5, 3rd wrong",
+  "spoken_en": "The bigger one is ninety thousand - tap it."
+ },
+ {
+  "clip": "l6_hand",
+  "who": "Neeli",
+  "text": "The bigger one is 1,05,789 - tap it.",
+  "ids": [
+   "l6_hand"
+  ],
+  "where": "Lock 1 pin 6, 3rd wrong",
+  "spoken_en": "The bigger one is one lakh five thousand seven hundred eighty-nine - tap it."
+ },
+ {
+  "clip": "l7_hand",
+  "who": "Neeli",
+  "text": "The bigger one is 1,20,728 - tap it.",
+  "ids": [
+   "l7_hand"
+  ],
+  "where": "Lock 1 pin 7, 3rd wrong",
+  "spoken_en": "The bigger one is one lakh twenty thousand seven hundred twenty-eight - tap it."
+ },
+ {
+  "clip": "l1_done_neeli",
+  "who": "Neeli",
+  "text": "Bravo!! One lock down.",
+  "ids": [
+   "l1_done_neeli"
+  ],
+  "where": "Shelf after lock 1",
+  "spoken_en": "Bravo!! One lock down."
+ },
+ {
+  "clip": "l1_done_pikoo",
+  "who": "Pikoo",
+  "text": "Yayy!! Two more to go!",
+  "ids": [
+   "l1_done_pikoo"
+  ],
+  "where": "Shelf after lock 1",
+  "spoken_en": "Yayy!! Two more to go!"
+ },
+ {
+  "clip": "l2_done_neeli",
+  "who": "Neeli",
+  "text": "Biggest and smallest, every time. One lock left.",
+  "ids": [
+   "l2_done_neeli"
+  ],
+  "where": "Shelf after lock 2",
+  "spoken_en": "Biggest and smallest, every time. One lock left."
+ },
+ {
+  "clip": "l2_done_pikoo",
+  "who": "Pikoo",
+  "text": "Whoever locked this really cares about snacks, huh...",
+  "ids": [
+   "l2_done_pikoo"
+  ],
+  "where": "Shelf after lock 2",
+  "spoken_en": "Whoever locked this really cares about snacks, huh..."
+ },
+ {
+  "clip": "l2_howto_pikoo",
+  "who": "Pikoo",
+  "text": "Make it the BIGGEST!",
+  "ids": [
+   "l2_howto_pikoo"
+  ],
+  "where": "Lock 2 how-to",
+  "spoken_en": "Make it the BIGGEST!"
+ },
+ {
+  "clip": "l2_howto_neeli",
+  "who": "Neeli",
+  "text": "...and the smallest. This lock wants BOTH.",
+  "ids": [
+   "l2_howto_neeli"
+  ],
+  "where": "Lock 2 how-to",
+  "spoken_en": "...and the smallest. This lock wants BOTH."
+ },
+ {
+  "clip": "l2_code1",
+  "who": "Pikoo",
+  "text": "Make the BIGGEST number from these shells: 5, 2, 8, 1. Drag them into the windows, then press Enter.",
+  "ids": [
+   "l2_code1"
+  ],
+  "where": "Lock 2 code 1",
+  "spoken_en": "Make the BIGGEST number from these shells: five, two, eight, one. Drag them into the windows, then press Enter."
+ },
+ {
+  "clip": "l2_code2",
+  "who": "Neeli",
+  "text": "Make the SMALLEST number from these shells: 5, 2, 8, 1. Drag them into the windows, then press Enter.",
+  "ids": [
+   "l2_code2"
+  ],
+  "where": "Lock 2 code 2",
+  "spoken_en": "Make the SMALLEST number from these shells: five, two, eight, one. Drag them into the windows, then press Enter."
+ },
+ {
+  "clip": "l2_code3",
+  "who": "Pikoo",
+  "text": "Make the BIGGEST number from these shells: 4, 0, 7, 3. Drag them into the windows, then press Enter.",
+  "ids": [
+   "l2_code3"
+  ],
+  "where": "Lock 2 code 3",
+  "spoken_en": "Make the BIGGEST number from these shells: four, zero, seven, three. Drag them into the windows, then press Enter."
+ },
+ {
+  "clip": "l2_code4",
+  "who": "Neeli",
+  "text": "Make the SMALLEST number from these shells: 4, 0, 7, 3. Drag them into the windows, then press Enter.",
+  "ids": [
+   "l2_code4"
+  ],
+  "where": "Lock 2 code 4",
+  "spoken_en": "Make the SMALLEST number from these shells: four, zero, seven, three. Drag them into the windows, then press Enter."
+ },
+ {
+  "clip": "l2_code5",
+  "who": "Pikoo",
+  "text": "Make the BIGGEST number from these shells: 6, 2, 9, 5, 1. Drag them into the windows, then press Enter.",
+  "ids": [
+   "l2_code5"
+  ],
+  "where": "Lock 2 code 5",
+  "spoken_en": "Make the BIGGEST number from these shells: six, two, nine, five, one. Drag them into the windows, then press Enter."
+ },
+ {
+  "clip": "l2_code6",
+  "who": "Neeli",
+  "text": "Make the SMALLEST number from these shells: 6, 2, 9, 5, 1. Drag them into the windows, then press Enter.",
+  "ids": [
+   "l2_code6"
+  ],
+  "where": "Lock 2 code 6",
+  "spoken_en": "Make the SMALLEST number from these shells: six, two, nine, five, one. Drag them into the windows, then press Enter."
+ },
+ {
+  "clip": "l2_code7",
+  "who": "Pikoo",
+  "text": "Make the BIGGEST (MASTER) number from these shells: 7, 0, 4, 2, 9, 1. Drag them into the windows, then press Enter.",
+  "ids": [
+   "l2_code7"
+  ],
+  "where": "Lock 2 code 7",
+  "spoken_en": "Make the BIGGEST (MASTER) number from these shells: seven, zero, four, two, nine, one. Drag them into the windows, then press Enter."
+ },
+ {
+  "clip": "l2_code1_correct",
+  "who": "Pikoo",
+  "text": "Biggest - nice and tall!",
+  "ids": [
+   "l2_code1_correct"
+  ],
+  "where": "Lock 2 code 1 correct",
+  "spoken_en": "Biggest - nice and tall!"
+ },
+ {
+  "clip": "l2_code2_correct",
+  "who": "Neeli",
+  "text": "And the smallest. Both - that is how it likes it.",
+  "ids": [
+   "l2_code2_correct"
+  ],
+  "where": "Lock 2 code 2 correct",
+  "spoken_en": "And the smallest. Both - that is how it likes it."
+ },
+ {
+  "clip": "l2_code3_correct",
+  "who": "Pikoo",
+  "text": "Biggest again!",
+  "ids": [
+   "l2_code3_correct"
+  ],
+  "where": "Lock 2 code 3 correct",
+  "spoken_en": "Biggest again!"
+ },
+ {
+  "clip": "l2_code4_correct",
+  "who": "Neeli",
+  "text": "Smallest - and you kept 0 out of the front. Sharp.",
+  "ids": [
+   "l2_code4_correct"
+  ],
+  "where": "Lock 2 code 4 correct",
+  "spoken_en": "Smallest - and you kept zero out of the front. Sharp."
+ },
+ {
+  "clip": "l2_code5_correct",
+  "who": "Pikoo",
+  "text": "Five shells - biggest, done!",
+  "ids": [
+   "l2_code5_correct"
+  ],
+  "where": "Lock 2 code 5 correct",
+  "spoken_en": "Five shells - biggest, done!"
+ },
+ {
+  "clip": "l2_code6_correct",
+  "who": "Pikoo",
+  "text": "Smallest, snug!",
+  "ids": [
+   "l2_code6_correct"
+  ],
+  "where": "Lock 2 code 6 correct",
+  "spoken_en": "Smallest, snug!"
+ },
+ {
+  "clip": "l2_code7_correct",
+  "who": "Neeli",
+  "text": "The master code - a whole lakh. Keypad is open!",
+  "ids": [
+   "l2_code7_correct"
+  ],
+  "where": "Lock 2 code 7 correct",
+  "spoken_en": "The master code - a whole lakh. Keypad is open!"
+ },
+ {
+  "clip": "l2_hint_big",
+  "who": "Neeli",
+  "text": "Biggest digit in front, then the next biggest.",
+  "ids": [
+   "l2_code1_hint",
+   "l2_code3_hint",
+   "l2_code5_hint",
+   "l2_code7_hint"
+  ],
+  "where": "Lock 2 hint (biggest)",
+  "spoken_en": "Biggest digit in front, then the next biggest."
+ },
+ {
+  "clip": "l2_hint_small",
+  "who": "Neeli",
+  "text": "Smallest digit in front, then the next smallest.",
+  "ids": [
+   "l2_code2_hint",
+   "l2_code6_hint"
+  ],
+  "where": "Lock 2 hint (smallest)",
+  "spoken_en": "Smallest digit in front, then the next smallest."
+ },
+ {
+  "clip": "l2_hint_zero",
+  "who": "Neeli",
+  "text": "Smallest digit in front - but 0 cannot lead!",
+  "ids": [
+   "l2_code4_hint"
+  ],
+  "where": "Lock 2 hint (code 4)",
+  "spoken_en": "Smallest digit in front - but zero cannot lead!"
+ },
+ {
+  "clip": "l2_code1_hand",
+  "who": "Neeli",
+  "text": "Set it like this - 8,521. Then press Enter.",
+  "ids": [
+   "l2_code1_hand"
+  ],
+  "where": "Lock 2 code 1, 3rd wrong",
+  "spoken_en": "Set it like this - eight thousand five hundred twenty-one. Then press Enter."
+ },
+ {
+  "clip": "l2_code2_hand",
+  "who": "Neeli",
+  "text": "Set it like this - 1,258. Then press Enter.",
+  "ids": [
+   "l2_code2_hand"
+  ],
+  "where": "Lock 2 code 2, 3rd wrong",
+  "spoken_en": "Set it like this - one thousand two hundred fifty-eight. Then press Enter."
+ },
+ {
+  "clip": "l2_code3_hand",
+  "who": "Neeli",
+  "text": "Set it like this - 7,430. Then press Enter.",
+  "ids": [
+   "l2_code3_hand"
+  ],
+  "where": "Lock 2 code 3, 3rd wrong",
+  "spoken_en": "Set it like this - seven thousand four hundred thirty. Then press Enter."
+ },
+ {
+  "clip": "l2_code4_hand",
+  "who": "Neeli",
+  "text": "Set it like this - 3,047. Then press Enter.",
+  "ids": [
+   "l2_code4_hand"
+  ],
+  "where": "Lock 2 code 4, 3rd wrong",
+  "spoken_en": "Set it like this - three thousand forty-seven. Then press Enter."
+ },
+ {
+  "clip": "l2_code5_hand",
+  "who": "Neeli",
+  "text": "Set it like this - 96,521. Then press Enter.",
+  "ids": [
+   "l2_code5_hand"
+  ],
+  "where": "Lock 2 code 5, 3rd wrong",
+  "spoken_en": "Set it like this - ninety-six thousand five hundred twenty-one. Then press Enter."
+ },
+ {
+  "clip": "l2_code6_hand",
+  "who": "Neeli",
+  "text": "Set it like this - 12,569. Then press Enter.",
+  "ids": [
+   "l2_code6_hand"
+  ],
+  "where": "Lock 2 code 6, 3rd wrong",
+  "spoken_en": "Set it like this - twelve thousand five hundred sixty-nine. Then press Enter."
+ },
+ {
+  "clip": "l2_code7_hand",
+  "who": "Neeli",
+  "text": "Set it like this - 9,74,210. Then press Enter.",
+  "ids": [
+   "l2_code7_hand"
+  ],
+  "where": "Lock 2 code 7, 3rd wrong",
+  "spoken_en": "Set it like this - nine lakh seventy-four thousand two hundred ten. Then press Enter."
+ },
+ {
+  "clip": "l3_howto_neeli",
+  "who": "Neeli",
+  "text": "This locker has seven shell-shaped bulbs. Arrange each set of numbers in order and one shell-bulb lights up.",
+  "ids": [
+   "l3_howto_neeli"
+  ],
+  "where": "Lock 3 how-to",
+  "spoken_en": "This locker has seven shell-shaped bulbs. Arrange each set of numbers in order and one shell-bulb lights up."
+ },
+ {
+  "clip": "l3_instr_asc",
+  "who": "Neeli",
+  "text": "Arrange the numbers in ascending order (smallest to biggest). Tap them in order - each correct one lights a shell-bulb on the locker.",
+  "ids": [
+   "l3_bulb1",
+   "l3_bulb2",
+   "l3_bulb3",
+   "l3_bulb6"
+  ],
+  "where": "Lock 3 bulbs 1,2,3,6",
+  "spoken_en": "Arrange the numbers in ascending order (smallest to biggest). Tap them in order - each correct one lights a shell-bulb on the locker."
+ },
+ {
+  "clip": "l3_instr_desc",
+  "who": "Neeli",
+  "text": "Arrange the numbers in descending order (biggest to smallest). Tap them in order - each correct one lights a shell-bulb on the locker.",
+  "ids": [
+   "l3_bulb4",
+   "l3_bulb5",
+   "l3_bulb7"
+  ],
+  "where": "Lock 3 bulbs 4,5,7",
+  "spoken_en": "Arrange the numbers in descending order (biggest to smallest). Tap them in order - each correct one lights a shell-bulb on the locker."
+ },
+ {
+  "clip": "l3_bulb1_correct",
+  "who": "Pikoo",
+  "text": "Small to big - first shell-bulb lights up!",
+  "ids": [
+   "l3_bulb1_correct"
+  ],
+  "where": "Lock 3 bulb 1 correct",
+  "spoken_en": "Small to big - first shell-bulb lights up!"
+ },
+ {
+  "clip": "l3_bulb2_correct",
+  "who": "Neeli",
+  "text": "Same digits - but you read past the front. Good.",
+  "ids": [
+   "l3_bulb2_correct"
+  ],
+  "where": "Lock 3 bulb 2 correct",
+  "spoken_en": "Same digits - but you read past the front. Good."
+ },
+ {
+  "clip": "l3_bulb3_correct",
+  "who": "Pikoo",
+  "text": "Another shell-bulb glows!",
+  "ids": [
+   "l3_bulb3_correct"
+  ],
+  "where": "Lock 3 bulb 3 correct",
+  "spoken_en": "Another shell-bulb glows!"
+ },
+ {
+  "clip": "l3_bulb4_correct",
+  "who": "Neeli",
+  "text": "Now big to small - clean.",
+  "ids": [
+   "l3_bulb4_correct"
+  ],
+  "where": "Lock 3 bulb 4 correct",
+  "spoken_en": "Now big to small - clean."
+ },
+ {
+  "clip": "l3_bulb5_correct",
+  "who": "Pikoo",
+  "text": "The lakh ones - in order!",
+  "ids": [
+   "l3_bulb5_correct"
+  ],
+  "where": "Lock 3 bulb 5 correct",
+  "spoken_en": "The lakh ones - in order!"
+ },
+ {
+  "clip": "l3_bulb6_correct",
+  "who": "Pikoo",
+  "text": "Almost there - nearly all lit!",
+  "ids": [
+   "l3_bulb6_correct"
+  ],
+  "where": "Lock 3 bulb 6 correct",
+  "spoken_en": "Almost there - nearly all lit!"
+ },
+ {
+  "clip": "l3_bulb7_correct",
+  "who": "Neeli",
+  "text": "Last shell-bulb - they all glow now!",
+  "ids": [
+   "l3_bulb7_correct"
+  ],
+  "where": "Lock 3 bulb 7 correct",
+  "spoken_en": "Last shell-bulb - they all glow now!"
+ },
+ {
+  "clip": "l3_hint_asc",
+  "who": "Neeli",
+  "text": "Find the smallest number still out, and tap that next.",
+  "ids": [
+   "l3_bulb1_hint",
+   "l3_bulb2_hint",
+   "l3_bulb3_hint",
+   "l3_bulb6_hint"
+  ],
+  "where": "Lock 3 hint (ascending)",
+  "spoken_en": "Find the smallest number still out, and tap that next."
+ },
+ {
+  "clip": "l3_hint_desc",
+  "who": "Neeli",
+  "text": "Find the biggest number still out, and tap that next.",
+  "ids": [
+   "l3_bulb4_hint",
+   "l3_bulb5_hint",
+   "l3_bulb7_hint"
+  ],
+  "where": "Lock 3 hint (descending)",
+  "spoken_en": "Find the biggest number still out, and tap that next."
+ },
+ {
+  "clip": "l3_hand",
+  "who": "Neeli",
+  "text": "This one comes next.",
+  "ids": [
+   "l3_bulb1_hand",
+   "l3_bulb2_hand",
+   "l3_bulb3_hand",
+   "l3_bulb4_hand",
+   "l3_bulb5_hand",
+   "l3_bulb6_hand",
+   "l3_bulb7_hand"
+  ],
+  "where": "Lock 3, 3rd wrong",
+  "spoken_en": "This one comes next."
+ },
+ {
+  "clip": "finale_narrator",
+  "who": "Narrator",
+  "text": "The last shell-bulb lights up - all seven shell-bulbs glow and the locker clicks open; a note flies down.",
+  "ids": [
+   "finale_narrator"
+  ],
+  "where": "Lock 3 finale",
+  "spoken_en": "The last shell-bulb lights up - all seven shell-bulbs glow and the locker clicks open; a note flies down."
+ },
+ {
+  "clip": "end_neeli_read",
+  "who": "Neeli",
+  "text": "'Snacks arranged and locked. - Pikoo.' It was you, Pikoo!",
+  "ids": [
+   "end_neeli_read"
+  ],
+  "where": "Ending",
+  "spoken_en": "'Snacks arranged and locked. - Pikoo.' It was you, Pikoo!"
+ },
+ {
+  "clip": "end_pikoo",
+  "who": "Pikoo",
+  "text": "OH. Right! I organised them this morning... and locked them... and forgot. Heh.",
+  "ids": [
+   "end_pikoo"
+  ],
+  "where": "Ending",
+  "spoken_en": "OH. Right! I organised them this morning... and locked them... and forgot. Heh."
+ },
+ {
+  "clip": "end_shells",
+  "who": "Mr. Shells",
+  "text": "The cafe is saved!",
+  "ids": [
+   "end_shells"
+  ],
+  "where": "Ending",
+  "spoken_en": "The cafe is saved!"
+ },
+ {
+  "clip": "end_narrator",
+  "who": "Narrator",
+  "text": "Bravo! The cafe can finally open. The doors swing open and a happy crowd of sea-creatures walks in for their snacks!",
+  "ids": [
+   "end_narrator"
+  ],
+  "where": "Ending",
+  "spoken_en": "Bravo! The cafe can finally open. The doors swing open and a happy crowd of sea-creatures walks in for their snacks!"
+ }
+]
