@@ -1,5 +1,5 @@
 /* =========================================================
-   Pikoo's Locked up Snacks — Lock 1: The Pins
+   Pikoo's Locked Up Snacks — Lock 1: The Pins
    Stage is authored at 1920x1080 (Figma frame size) and
    scaled to fit the window by js/game.js.
    ========================================================= */
@@ -1737,10 +1737,10 @@ button { font-family: inherit; cursor: pointer; }
 /* light sweeps across the title letters */
 .cover-title-shine {
   position: absolute;
-  left: 330px;
-  top: 80px;
-  width: 1290px;
-  height: 420px;
+  left: 328px;
+  top: 65px;
+  width: 1275px;
+  height: 440px;
   -webkit-mask: url(../assets/images/cover_title_mask.png) no-repeat 0 0 / 100% 100%;
           mask: url(../assets/images/cover_title_mask.png) no-repeat 0 0 / 100% 100%;
   background: linear-gradient(100deg, transparent 35%, rgba(255, 255, 255, .85) 48%, rgba(255, 255, 255, .85) 52%, transparent 65%) no-repeat;
@@ -1766,9 +1766,9 @@ button { font-family: inherit; cursor: pointer; }
 }
 .cover-start {
   position: absolute;
-  left: 765px;
-  top: 966px;
-  width: 390px;
+  left: 763px;
+  top: 975px;
+  width: 398px;
   height: 92px;
   padding: 0;
   border: none;

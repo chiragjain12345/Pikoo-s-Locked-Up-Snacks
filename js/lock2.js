@@ -46,17 +46,18 @@ const L2_HOWTO = [
 // One wording everywhere (panel + hint card)
 const HINT_BIG = 'Put the biggest digit first, then the next biggest, and so on.';
 const HINT_SMALL = 'Put the smallest digit first, then the next smallest, and so on.';
-const HINT_ZERO = "Put the smallest digit first, then the next smallest, and so on - but 0 can't go first, or it loses a digit.";
+// 2nd wrong answer on a SMALLEST set that has a 0: ask about the length (4 → "four-digit", 6 → "six-digit")
+const hintZero = (n) => `Check again. Is it a ${['', '', '', 'three', 'four', 'five', 'six'][n]}-digit number? Because if you put 0 first, it loses a digit.`;
 
 const CODES = [
   { digits: [5, 2, 8, 1], goal: 'biggest', who: 'Pikoo', hint: HINT_BIG, fb: { who: 'Pikoo', text: 'Biggest number… good!' } },
   { digits: [5, 2, 8, 1], goal: 'smallest', who: 'Neeli', hint: HINT_SMALL, fb: { who: 'Neeli', text: 'And the smallest too. Proud of you!' } },
   { digits: [4, 0, 7, 3], goal: 'biggest', who: 'Pikoo', hint: HINT_BIG, fb: { who: 'Pikoo', text: 'Biggest again! Yayy!!' } },
-  { digits: [4, 0, 7, 3], goal: 'smallest', who: 'Neeli', hint: HINT_ZERO, fb: { who: 'Neeli', text: "Smallest done - and you kept 0 out of the front, because a number can't start with 0." } },
+  { digits: [4, 0, 7, 3], goal: 'smallest', who: 'Neeli', hint: hintZero(4), fb: { who: 'Neeli', text: "Smallest done - and you kept 0 out of the front, because a number can't start with 0." } },
   { digits: [6, 2, 9, 5, 1], goal: 'biggest', who: 'Pikoo', hint: HINT_BIG, fb: { who: 'Pikoo', text: 'Five digits on the shells - biggest number, done!' } },
   { digits: [6, 2, 9, 5, 1], goal: 'smallest', who: 'Neeli', hint: HINT_SMALL, fb: { who: 'Pikoo', text: 'Smallest done too, You are smart!' } },
   { digits: [7, 0, 4, 2, 9, 1], goal: 'biggest', master: true, who: 'Pikoo', hint: HINT_BIG, fb: { who: 'Neeli', text: 'A number in lakhs. Yayy… you made the biggest number.' } },
-  { digits: [7, 0, 4, 2, 9, 1], goal: 'smallest', master: true, who: 'Neeli', hint: HINT_ZERO, fb: { who: 'Neeli', text: 'And now you made the smallest too… You did it.' } },
+  { digits: [7, 0, 4, 2, 9, 1], goal: 'smallest', master: true, who: 'Neeli', hint: hintZero(6), fb: { who: 'Neeli', text: 'And now you made the smallest too… You did it.' } },
 ];
 
 // Rounds: BIGGEST and SMALLEST of the same shells are solved together on one screen
@@ -658,7 +659,9 @@ function lock2Wrong() {
   if (L2.attempts === 1) {
     setInstruction({ who: 'Neeli', text: `Oops! Check the ${c.goal.toUpperCase()} number again.`, voiceOnly: true, restore: true }, WRONG_1.id);
   } else if (L2.attempts === 2) {
-    const hintVo = c.goal === 'biggest' ? 'l2_hint_big' : c.digits.includes(0) ? 'l2_hint_zero' : 'l2_hint_small';
+    const hintVo = c.goal === 'biggest' ? 'l2_hint_big'
+      : c.digits.includes(0) ? (c.digits.length === 4 ? 'l2_hint_zero4' : 'l2_hint_zero') // "Check again. Is it a four-digit number?…"
+      : 'l2_hint_small';
     setInstruction({ who: 'Neeli', text: c.hint }, hintVo);
     L2.busy = true;
     setTimeout(() => openHint2(c), 800);

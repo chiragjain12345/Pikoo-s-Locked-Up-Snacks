@@ -1,5 +1,5 @@
 /* =========================================================
-   Pikoo's Locked up Snacks — Lock 1: The Pins
+   Pikoo's Locked Up Snacks — Lock 1: The Pins
    Flow: Title → Story 1 → Story 2 → zoom into lock 1 →
          How to play → 7 compare levels → Lock open
    ========================================================= */
@@ -50,7 +50,7 @@ const NEELI_3 = {
   id: 's3_neeli',
   who: 'Neeli',
   vo: 'There are three locks... that means we have to solve all three levels to open up the snack shelf and to find out WHO locked the snacks.',
-  text: 'Crack all three locks to open the cupboard - and solve who locked it!',
+  text: 'Crack all three locks to open the cupboard - and find out who locked it!',
   at: { left: 133, top: 364, width: 560 },
 };
 const NEELI_HOME = { x: 228, y: 609 }; // where Neeli is painted in the Figma screen 3
@@ -101,7 +101,7 @@ const AUDIO_FILES = {
     'howto_pikoo', 'instruction', 'wrong_1', 'wrong_2_hint', 'idle', 'idle_drag', 'l1_hand',
     'l1_correct', 'l2_correct', 'l3_correct', 'l4_correct', 'l5_correct', 'l6_correct', 'l7_correct',
     'l1_done_neeli', 'l1_done_pikoo', 'l2_done_neeli', 'l2_done_pikoo',
-    'l2_howto_pikoo', 'l2_howto_neeli', 'l2_round1', 'l2_round2', 'l2_round3', 'l2_round4', 'l2_hint_big', 'l2_hint_small', 'l2_hint_zero', 'l2_hand',
+    'l2_howto_pikoo', 'l2_howto_neeli', 'l2_round1', 'l2_round2', 'l2_round3', 'l2_round4', 'l2_hint_big', 'l2_hint_small', 'l2_hint_zero', 'l2_hint_zero4', 'l2_hand',
     'l2_round1_big_ok', 'l2_round2_big_ok', 'l2_round3_big_ok', 'l2_round4_big_ok',
     'l2_round1_correct', 'l2_round2_correct', 'l2_round3_correct', 'l2_round4_correct',
     'l3_howto_neeli', 'l3_tut_1', 'l3_tut_2', 'l3_tut_3', 'l3_tut_4', 'l3_tut_5',
@@ -138,10 +138,14 @@ AUDIO_FILES.sfxs.forEach((n) => probe(`assets/audio/sfxs/${n}.mp3`));
 // clip had its own preloaded player and was only used once it reported "ready" — some
 // never did, and those lines fell back to a silent text-to-speech.)
 const VO_IDS = new Set(AUDIO_FILES.vos);
+// Same ?v= as this script in index.html, so a new build also re-loads changed voice files
+// (without it the browser kept playing old cached clips)
+const ASSET_V = (() => { try { return new URL(document.currentScript.src).searchParams.get('v') || ''; } catch (e) { return ''; } })();
+const voUrl = (id) => `assets/audio/vos/${id}.mp3${ASSET_V ? `?v=${ASSET_V}` : ''}`;
 const voPlayer = new Audio();
 voPlayer.preload = 'auto';
 // warm the browser cache so lines start without a delay (ignored where fetch can't read files)
-AUDIO_FILES.vos.forEach((id) => { try { fetch(`assets/audio/vos/${id}.mp3`).catch(() => {}); } catch (e) { /* file:// */ } });
+AUDIO_FILES.vos.forEach((id) => { try { fetch(voUrl(id)).catch(() => {}); } catch (e) { /* file:// */ } });
 
 function pickVoice() {
   const voices = window.speechSynthesis ? speechSynthesis.getVoices() : [];
@@ -184,7 +188,7 @@ function speak(id, who, text, onStart, onEnd) {
     const a = voPlayer;
     a.onended = null;
     a.onerror = null;
-    a.src = `assets/audio/vos/${id}.mp3`;
+    a.src = voUrl(id);
     a.onended = onEnd || null;
     // file missing / unreadable: say it with text-to-speech instead
     a.onerror = () => { if (Sound.current === a) { Sound.current = null; speakTTS(who, text, onStart, onEnd); } };
@@ -537,7 +541,7 @@ const coverStart = $('#cover-start');
 // Title voice-over: a little jingle, then the title is announced with sparkles.
 // Browsers block sound until the first tap, so we try on load and again on
 // the first tap anywhere on the cover.
-const COVER_VO = { id: 'cover_title', who: 'Title', text: "Pikoo's... Locked up Snacks!" };
+const COVER_VO = { id: 'cover_title', who: 'Title', text: "Pikoo's... Locked Up Snacks!" };
 let coverVoDone = false;
 function announceTitle() {
   if (coverVoDone || !Sound.on || !$('#screen-cover').classList.contains('active')) return;
@@ -731,11 +735,13 @@ function goStory2() {
     const ready = () => {
       if (!voDone || !tourDone || going) return;
       going = true;
-      // Story done: zoom into the first lock by itself
-      setTimeout(zoomToFirstLock, STORY_PAUSE);
+      // Story done: 2 s after Neeli finishes, zoom into the first lock by itself
+      setTimeout(zoomToFirstLock, 2000);
     };
     speak(NEELI_3.id, NEELI_3.who, NEELI_3.vo, null, () => { voDone = true; ready(); });
-    setTimeout(() => { voDone = true; ready(); }, Sound.on ? 11000 : 6500); // fallback if no end event
+    // fallback if no end event: never cut her off — wait until nothing is speaking
+    const fallback = () => { if (voDone) return; if (isSpeaking()) { setTimeout(fallback, 250); return; } voDone = true; ready(); };
+    setTimeout(fallback, Sound.on ? 11000 : 6500);
     const T = neeliTour(actor);
     setTimeout(() => { showBubble(bubble, NEELI_3); tourDone = true; ready(); }, T);
   }, 700);
