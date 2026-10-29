@@ -508,6 +508,16 @@ button { font-family: inherit; cursor: pointer; }
 /* Empty panel (e.g. while lock 3's voice-only intro plays): the whole panel, avatar included, fades away */
 #top-panel { transition: opacity .35s ease, visibility 0s; }
 #top-panel.empty { opacity: 0; visibility: hidden; transition: opacity .35s ease, visibility 0s .35s; }
+/* Lock 3 finale: the panel and avatar slide off to the left while the narrator speaks */
+#top-panel.slide-away > * { animation: panelSlideAway .8s cubic-bezier(.5, 0, .75, 0) forwards; pointer-events: none; }
+#top-panel.slide-away > .avatar,
+#top-panel.slide-away > .av-disc,
+#top-panel.slide-away > .avatar-sprite { animation-delay: .08s; }
+@keyframes panelSlideAway {
+  0%   { translate: 0 0; opacity: 1; }
+  20%  { translate: 40px 0; opacity: 1; }   /* little wind-up to the right */
+  100% { translate: -2200px 0; opacity: 0; }
+}
 .instruction-text.swap { animation: textSwap .45s ease; }
 @keyframes textSwap {
   0% { opacity: 0; transform: translateY(14px); }
@@ -2088,6 +2098,23 @@ button { font-family: inherit; cursor: pointer; }
 #screen-game.mode-lock3 .order-sym { display: none; }
 .order-tag { white-space: nowrap; font-size: 26px; letter-spacing: .3px; text-transform: none; }
 .order-tag span { font-size: 22px; font-weight: 700; opacity: .92; }
+/* Stand out from the orange-gold board: deep purple,
+   white border, bigger text and a soft glow that pulses so the eye goes to it */
+#screen-game .code-tag.order-tag {
+  font-size: 30px;
+  padding: 8px 28px 10px;
+  border: 3px solid #fff;
+  background: linear-gradient(180deg, #8a4dff, #5a1fc7);
+  box-shadow: 0 4px 0 #3a1385, 0 0 0 4px rgba(138, 77, 255, .25);
+  animation: orderGlow 1.8s ease-in-out infinite;
+}
+#screen-game .code-tag.order-tag span { font-size: 24px; opacity: 1; }
+/* same purple for ascending and descending (consistent look; the words say which order) */
+#screen-game .code-tag.order-tag.swap { animation: popIn .4s cubic-bezier(.2, 1.6, .4, 1), orderGlow 1.8s ease-in-out infinite .4s; }
+@keyframes orderGlow {
+  0%, 100% { box-shadow: 0 4px 0 #3a1385, 0 0 0 4px rgba(138, 77, 255, .25), 0 0 10px rgba(138, 77, 255, .35); }
+  50%      { box-shadow: 0 4px 0 #3a1385, 0 0 0 7px rgba(138, 77, 255, .35), 0 0 26px rgba(138, 77, 255, .75); }
+}
 
 /* While the instruction voice-over plays, the level can't be touched yet */
 #screen-game.vo-lock .choice,

@@ -522,7 +522,8 @@ function roundInstruction(i) {
   const codes = roundCodes(i);
   if (codes.length === 1) return codeInstruction(codes[0]);
   const ask = `Make the BIGGEST and the SMALLEST ${codes[0].digits.length}-digit number from the digits on these shells: ${codes[0].digits.join(', ')}.`;
-  return ask; // stops at the digits (no repeated drag/Enter how-to)
+  // every round also says how to play it
+  return `${ask} Drag the digit shells into the windows, then press Enter.`;
 }
 
 function loadCode(i, intro) {
@@ -549,9 +550,10 @@ function loadCode(i, intro) {
   }, L2.shells.length ? 450 : 0);
 
   const line = { who: 'Neeli', text: roundInstruction(i) };
-  setQuestion(line, `l2_round${i + 1}`);
-  if (intro) playIntro(intro, line, `l2_round${i + 1}`);
-  else setInstruction(line, `l2_round${i + 1}`);
+  const voId = `l2_round${i + 1}_drag`; // voice includes "Drag the digit shells into the windows. Then press Enter."
+  setQuestion(line, voId);
+  if (intro) playIntro(intro, line, voId);
+  else setInstruction(line, voId);
 }
 
 function armIdle2(ms = IDLE_MS) {
@@ -592,7 +594,7 @@ async function nextRow() {
   row.idx.forEach((w) => L2.windows[w].el.classList.add('right'));
   sfx('correct');
   starBurst(WIN_CENTER_X, L2.g.rowsY[L2.active] + WIN_H / 2, 12);
-  const fb = sayFeedback(row.code.fb, `l2_round${L2.level + 1}_big_ok`);
+  const fb = L2.attempts > 0 ? sayFeedback(RETRY_FB) : sayFeedback(row.code.fb, `l2_round${L2.level + 1}_big_ok`);
   await wait(900);
   row.idx.forEach((w) => {
     const sh = L2.slots[w];
@@ -622,7 +624,7 @@ async function codeRight() {
   starBurst(WIN_CENTER_X, L2.g.rowsY[0] + WIN_H / 2, 14);
   sparkles(WIN_CENTER_X, L2.g.rowsY[L2.g.rowsY.length - 1] + WIN_H / 2, 22, 260);
   const codes = roundCodes(i);
-  const fbDone = sayFeedback(codes[codes.length - 1].fb, `l2_round${i + 1}_correct`);
+  const fbDone = L2.attempts > 0 ? sayFeedback(RETRY_FB) : sayFeedback(codes[codes.length - 1].fb, `l2_round${i + 1}_correct`);
 
   ROUNDS[i].codes.forEach((k) => {
     const socket = state.sockets[k];

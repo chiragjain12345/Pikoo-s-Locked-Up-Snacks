@@ -16,6 +16,7 @@ const NEELI_TALK = [0, 1, 2, 1, 3, 2, 1, 0]; // top row: mouth moving
 const NEELI_BLINK = [5, 6, 6, 6, 5];
 const NEELI_SAD_STRIP = 'assets/images/neeli_sad_blink_strip.png'; // wrong answer (same 463x291 cells)
 const NEELI_SAD = [0, 1, 2, 1, 1, 3, 3, 5, 6, 5, 3]; // droop, sad mouth, sad blink
+const NEELI_SAD_TALK = [1, 2, 1, 2, 3, 2, 1]; // still sad, mouth moving (a long hint keeps this face)
 const NEELI_HAPPY_STRIP = 'assets/images/neeli_happy_anim_strip.png'; // right answer (6 frames, 463x291 cells)
 const NEELI_HAPPY = [0, 1, 2, 3, 4, 5];
 // Each sheet keeps its own layer (switched by opacity), so changing mood never repaints an
@@ -110,7 +111,9 @@ function neeliFrame(now, talking, sad, happy) {
   if (happy) {
     f = NEELI_HAPPY[Math.floor((now - av.moodStart) / 140) % NEELI_HAPPY.length];
   } else if (sad) {
-    f = NEELI_SAD[Math.min(NEELI_SAD.length - 1, Math.floor((now - av.moodStart) / 200))];
+    const k = Math.floor((now - av.moodStart) / 200);
+    if (k < NEELI_SAD.length) f = NEELI_SAD[k];
+    else f = now < av.talkingUntil ? NEELI_SAD_TALK[Math.floor(now / 140) % NEELI_SAD_TALK.length] : NEELI_SAD[NEELI_SAD.length - 1];
   } else
   if (talking) { f = NEELI_TALK[Math.floor(now / 110) % NEELI_TALK.length]; nbStart = -1; }
   else {
@@ -128,7 +131,8 @@ function neeliFrame(now, talking, sad, happy) {
 }
 
 function avatarLoop(now) {
-  const moodOn = now < av.moodUntil;
+  // a wrong answer keeps the sad face until its line (Oops / hint / nudge) has been spoken — never a smile mid-correction
+  const moodOn = now < av.moodUntil || (av.mood === 'sad' && av.holdSad && now < av.talkingUntil);
   if (av.who === 'Neeli') neeliFrame(now, !moodOn && now < av.talkingUntil, moodOn && av.mood === 'sad', moodOn && av.mood === 'happy');
   const state = moodOn ? av.mood : (now < av.talkingUntil ? 'talking' : 'idle');
   if (sprite.dataset.state !== state) {
@@ -147,6 +151,9 @@ setInstruction = function (line, voId, onEnd) {
   // Every line in the instruction panel is Neeli's (shown and voiced as Neeli)
   if (line.who !== 'Neeli' && line.who !== 'Narrator') line = Object.assign({}, line, { who: 'Neeli', speaker: line.who });
   showChar('Neeli');
+  // only the line a wrong answer triggers keeps the sad face; any other line (praise, repeat) talks normally
+  av.holdSad = av.wrongLine;
+  av.wrongLine = false;
   const est = 1000 + line.text.length * 65;
   av.talkingUntil = performance.now() + (Sound.on ? est + 4000 : est); // upper bound; trimmed when the voice ends
   return _setInstruction(line, voId, (...a) => {
@@ -161,7 +168,8 @@ function wrapMood(name, mood, ms) {
   if (typeof fn !== 'function') return;
   window[name] = function (...args) {
     setMood(mood, ms);
-    return fn.apply(this, args);
+    if (mood === 'sad') av.wrongLine = true; // the Oops / hint / nudge said next keeps the sad face
+    try { return fn.apply(this, args); } finally { av.wrongLine = false; }
   };
 }
 wrapMood('onCorrect', 'happy', 2800);   // lock 1

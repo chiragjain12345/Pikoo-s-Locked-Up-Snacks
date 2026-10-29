@@ -58,6 +58,8 @@ const LOCK_Y = [300, 490, 680]; // lock centres on screen 3 (x = 1068)
 
 const HOW_TO = { id: 'howto_pikoo', who: 'Pikoo', text: 'Seven little pins. Tap the bigger number and a pin pops loose!' };
 const INSTRUCTION = { id: 'instruction', who: 'Neeli', text: 'Tap the bigger number.' };
+// Praise after the child needed wrong tries: no "easy / you got it" lines, just a plain "Good job!"
+const RETRY_FB = { id: 'l2_correct', who: 'Neeli', text: 'Good job!' };
 const WRONG_1 = { id: 'wrong_1', who: 'Neeli', text: 'Oops! Try Again.', voiceOnly: true, restore: true };
 const WRONG_2 = { id: 'wrong_2_hint', who: 'Neeli', text: 'Compare the number of digits first. If the number of digits is the same, compare the digits from the left until they are different.' };
 const IDLE = { id: 'idle', who: 'Neeli', text: 'Take your time - tap the one you think is right.' };
@@ -101,7 +103,7 @@ const AUDIO_FILES = {
     'howto_pikoo', 'instruction', 'wrong_1', 'wrong_2_hint', 'idle', 'idle_drag', 'l1_hand',
     'l1_correct', 'l2_correct', 'l3_correct', 'l4_correct', 'l5_correct', 'l6_correct', 'l7_correct',
     'l1_done_neeli', 'l1_done_pikoo', 'l2_done_neeli', 'l2_done_pikoo',
-    'l2_howto_pikoo', 'l2_howto_neeli', 'l2_round1', 'l2_round2', 'l2_round3', 'l2_round4', 'l2_hint_big', 'l2_hint_small', 'l2_hint_zero', 'l2_hint_zero4', 'l2_hand',
+    'l2_howto_pikoo', 'l2_howto_neeli', 'l2_round1', 'l2_round1_drag', 'l2_round2_drag', 'l2_round3_drag', 'l2_round4_drag', 'l2_round2', 'l2_round3', 'l2_round4', 'l2_hint_big', 'l2_hint_small', 'l2_hint_zero', 'l2_hint_zero4', 'l2_hand',
     'l2_round1_big_ok', 'l2_round2_big_ok', 'l2_round3_big_ok', 'l2_round4_big_ok',
     'l2_round1_correct', 'l2_round2_correct', 'l2_round3_correct', 'l2_round4_correct',
     'l3_howto_neeli', 'l3_tut_1', 'l3_tut_2', 'l3_tut_3', 'l3_tut_4', 'l3_tut_5',
@@ -883,6 +885,7 @@ function showPanelText(text, who = 'Neeli') {
   chipEl.style.background = SPEAKERS[who].color;
   instructionEl.textContent = text;
   $('#top-panel').classList.toggle('empty', !text); // no text: hide the bar until there is some
+  if (text) $('#top-panel').classList.remove('slide-away');
   instructionEl.classList.toggle('long', text.length > 60);
   instructionEl.style.fontSize = '';
   let fs = parseFloat(getComputedStyle(instructionEl).fontSize);
@@ -912,6 +915,7 @@ function setInstruction(line, voId = line.id, onEnd) {
   chipEl.style.background = SPEAKERS[line.who].color;
   instructionEl.textContent = line.text;
   $('#top-panel').classList.toggle('empty', !line.text);
+  if (line.text) $('#top-panel').classList.remove('slide-away');
   instructionEl.classList.toggle('long', line.text.length > 60);
   // shrink the text a little if it would spill out of the panel
   instructionEl.style.fontSize = '';
@@ -1152,7 +1156,7 @@ async function onCorrect(el) {
   const c = stageCenter(el);
   starBurst(c.x, c.y, 12);
   const i = state.level;
-  const fbDone = sayFeedback(LEVELS[i].fb, `l${i + 1}_correct`);
+  const fbDone = state.attempts > 0 ? sayFeedback(RETRY_FB) : sayFeedback(LEVELS[i].fb, `l${i + 1}_correct`);
 
   await popPin(i);
   setProgress(i + 1);

@@ -345,7 +345,7 @@ async function setDone() {
   sparkles((r.left - st.left + r.width / 2) / k, (r.top - st.top + r.height / 2) / k, 16, 120);
   sfx('bulbon');
   starBurst((r.left - st.left + r.width / 2) / k, (r.top - st.top + r.height / 2) / k, 10);
-  const fbDone = sayFeedback(BULBS[i].fb, `l3_bulb${i + 1}_correct`);
+  const fbDone = L3.attempts > 0 ? sayFeedback(RETRY_FB) : sayFeedback(BULBS[i].fb, `l3_bulb${i + 1}_correct`);
 
   const socket = state.sockets[i];
   const gem = document.createElement('div');
@@ -414,7 +414,7 @@ function lock3HintClosed() {
 /* ---------------- All 7 bulbs lit ---------------- */
 // First half on the game screen (text + voice); the second half is voice-only,
 // heard in the cafe while the locker opens and the note flies out (js/ending.js).
-const FINALE_VO = { id: 'finale_narrator', who: 'Narrator', text: 'The last shell-bulb lights up - all seven shell-bulbs glow.', voiceOnly: true };
+const FINALE_VO = { id: 'finale_narrator', who: 'Narrator', text: 'The last shell-bulb lights up - all seven shell-bulbs glow.', voiceOnly: true, noCaption: true };
 
 async function finale3() {
   L3.phase = 'done';
@@ -423,6 +423,8 @@ async function finale3() {
   board.classList.add('shine');
   sfx('chime');
   sparkles(960, 434, 30, 420);
+  // the narrator says this (voice only): the instruction panel and Neeli's avatar slide away to the side
+  $('#top-panel').classList.add('slide-away');
   const voDone = new Promise((res) => {
     setInstruction(FINALE_VO, FINALE_VO.id, res);
     setTimeout(res, Sound.on ? 1800 + FINALE_VO.text.length * 80 : 4000);
