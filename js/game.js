@@ -544,12 +544,13 @@ const coverStart = $('#cover-start');
 // Browsers block sound until the first tap, so we try on load and again on
 // the first tap anywhere on the cover.
 const COVER_VO = { id: 'cover_title', who: 'Title', text: "Pikoo's... Locked Up Snacks!" };
-let coverVoDone = false;
+let titleBusy = false; // the title is being read right now (taps meanwhile don't restart it)
 function announceTitle() {
-  if (coverVoDone || !Sound.on || !$('#screen-cover').classList.contains('active')) return;
+  if (titleBusy || !Sound.on || !$('#screen-cover').classList.contains('active')) return;
   const ctx = audioCtx();
   if (!ctx || ctx.state !== 'running') return;
-  coverVoDone = true;
+  titleBusy = true;
+  const done = () => { titleBusy = false; $('#screen-cover').classList.remove('announce'); };
   sfx('correct');
   sfx('sparkle');
   $('#screen-cover').classList.add('announce');
@@ -561,18 +562,19 @@ function announceTitle() {
   starBurst(640, 170, 10);
   starBurst(1280, 170, 10);
   setTimeout(() => {
-    speak(COVER_VO.id, COVER_VO.who, COVER_VO.text, null, () => $('#screen-cover').classList.remove('announce'));
+    speak(COVER_VO.id, COVER_VO.who, COVER_VO.text, null, done);
     starBurst(960, 300, 16);
   }, 650);
-  setTimeout(() => $('#screen-cover').classList.remove('announce'), 5000);
+  setTimeout(done, 5000); // fallback if no end event
 }
-// No sound before the first tap: the title is read once the cover is tapped
+// No sound before the first tap. Every tap on the cover (except Start) reads the title again,
+// so a child who missed it can hear it once more.
 $('#screen-cover').addEventListener('pointerdown', (e) => {
   if (!coverStart.contains(e.target)) setTimeout(announceTitle, 50);
 });
 // say it again if nobody has tapped Start for a while
 setInterval(() => {
-  if ($('#screen-cover').classList.contains('active') && coverVoDone) { coverVoDone = false; announceTitle(); }
+  if ($('#screen-cover').classList.contains('active')) announceTitle();
 }, 20000);
 
 coverStart.addEventListener('click', async () => {
