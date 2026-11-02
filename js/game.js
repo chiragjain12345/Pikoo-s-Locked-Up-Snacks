@@ -103,7 +103,7 @@ const AUDIO_FILES = {
     'howto_pikoo', 'instruction', 'wrong_1', 'wrong_2_hint', 'idle', 'idle_drag', 'l1_hand',
     'l1_correct', 'l2_correct', 'l3_correct', 'l4_correct', 'l5_correct', 'l6_correct', 'l7_correct',
     'l1_done_neeli', 'l1_done_pikoo', 'l2_done_neeli', 'l2_done_pikoo',
-    'l2_howto_pikoo', 'l2_howto_neeli', 'l2_round1', 'l2_round1_drag', 'l2_round2_drag', 'l2_round3_drag', 'l2_round4_drag', 'l2_round2', 'l2_round3', 'l2_round4', 'l2_hint_big', 'l2_hint_small', 'l2_hint_zero', 'l2_hint_zero4', 'l2_hand',
+    'l2_howto_pikoo', 'l2_howto_neeli', 'l2_round1', 'l2_round1_drag', 'l2_round2_drag', 'l2_round3_drag', 'l2_round4_drag', 'l2_round2', 'l2_round3', 'l2_round4', 'l2_hint_big', 'l2_hint_small', 'l2_hint_zero', 'l2_hint_zero4', 'l2_hand', 'l2_show', 'l2_your_turn',
     'l2_round1_big_ok', 'l2_round2_big_ok', 'l2_round3_big_ok', 'l2_round4_big_ok',
     'l2_round1_correct', 'l2_round2_correct', 'l2_round3_correct', 'l2_round4_correct',
     'l3_howto_neeli', 'l3_tut_1', 'l3_tut_2', 'l3_tut_3', 'l3_tut_4', 'l3_tut_5',
@@ -1083,7 +1083,7 @@ function loadLevel(i, intro) {
 
   const first = choiceA.classList.contains('hidden');
   [choiceA, choiceB].forEach((c, idx) => {
-    c.classList.remove('right', 'wrong', 'idle', 'locked');
+    c.classList.remove('right', 'wrong', 'idle', 'locked', 'off');
     if (first) {
       $('.num', c).textContent = state.order[idx];
       setTimeout(() => c.classList.remove('hidden'), idx * 140);
@@ -1107,14 +1107,14 @@ function armGameIdle(ms = IDLE_MS) {
   Idle.arm(ms, () => {
     if (state.busy || state.phase !== 'play') return;
     showNudge(IDLE);
-    [choiceA, choiceB].forEach((c) => c.classList.add('idle'));
+    [choiceA, choiceB].forEach((c) => { if (!c.classList.contains('off')) c.classList.add('idle'); });
     armGameIdle(IDLE_REPEAT_MS);
   });
 }
 
 [choiceA, choiceB].forEach((c, idx) => {
   c.addEventListener('click', () => {
-    if (state.busy || state.phase !== 'play') return;
+    if (state.busy || state.phase !== 'play' || c.classList.contains('off')) return; // switched-off wrong option
     [choiceA, choiceB].forEach((x) => x.classList.remove('idle'));
     if (idx === state.correct) onCorrect(c);
     else onWrong(c);
@@ -1143,6 +1143,8 @@ function onWrong(el) {
     );
     showHand(state.correct === 0 ? choiceA : choiceB);
   }
+  // 4 wrong tries: the wrong option is switched off — only the right one can be tapped now
+  if (state.attempts >= 4) el.classList.add('off');
   armGameIdle();
 }
 

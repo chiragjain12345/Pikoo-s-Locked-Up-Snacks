@@ -271,13 +271,13 @@ function armIdle3(ms = IDLE_MS) {
   Idle.arm(ms, () => {
     if (L3.busy || L3.phase !== 'play') return;
     showNudge(IDLE);
-    L3.cards.forEach((c) => { if (!c.placed) c.el.classList.add('idle'); });
+    L3.cards.forEach((c) => { if (!c.placed && !c.el.classList.contains('off')) c.el.classList.add('idle'); });
     armIdle3(IDLE_REPEAT_MS);
   });
 }
 
 function onCardTap(card) {
-  if (L3.busy || L3.phase !== 'play' || card.placed) return;
+  if (L3.busy || L3.phase !== 'play' || card.placed || card.el.classList.contains('off')) return; // switched-off wrong card
   L3.cards.forEach((c) => c.el.classList.remove('idle'));
   hideHand();
   const b = BULBS[L3.level];
@@ -297,8 +297,15 @@ function placeCard(card) {
   sfx('land');
   sparkles(slot.x + CARD_W / 2, SLOT_TOP + CARD_H / 2, 8, 70);
   L3.next++;
+  if (L3.attempts >= 4) lockWrongCards(); // keep only the new next card tappable
   armIdle3();
   if (L3.next === BULBS[L3.level].nums.length) setDone();
+}
+
+// After 4 wrong tries on a set: every card except the next correct one is switched off
+function lockWrongCards() {
+  const b = BULBS[L3.level];
+  L3.cards.forEach((c) => c.el.classList.toggle('off', !c.placed && c.num !== b.nums[L3.next]));
 }
 
 function wrongCard(card) {
@@ -324,6 +331,7 @@ function wrongCard(card) {
     handEl.style.top = `${CARD_TOP + 30}px`;
     handEl.classList.add('show');
   }
+  if (L3.attempts >= 4) lockWrongCards();
   armIdle3();
 }
 

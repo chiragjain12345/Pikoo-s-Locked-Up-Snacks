@@ -661,13 +661,23 @@ function lock2Wrong() {
   if (L2.attempts === 1) {
     setInstruction({ who: 'Neeli', text: `Oops! Check the ${c.goal.toUpperCase()} number again.`, voiceOnly: true, restore: true }, WRONG_1.id);
   } else if (L2.attempts === 2) {
+    // The "0 in front" message only when the child's number really starts with 0;
+    // any other wrong SMALLEST answer gets the normal smallest hint
+    const zeroFirst = c.goal === 'smallest' && c.digits.includes(0) && rowBuilt(bad[0])[0] === '0';
+    const hint = c.goal === 'smallest' && c.digits.includes(0) && !zeroFirst ? HINT_SMALL : c.hint;
     const hintVo = c.goal === 'biggest' ? 'l2_hint_big'
-      : c.digits.includes(0) ? (c.digits.length === 4 ? 'l2_hint_zero4' : 'l2_hint_zero') // "Check again. Is it a four-digit number?…"
+      : zeroFirst ? (c.digits.length === 4 ? 'l2_hint_zero4' : 'l2_hint_zero') // "Check again. Is it a four-digit number?…"
       : 'l2_hint_small';
-    setInstruction({ who: 'Neeli', text: c.hint }, hintVo);
+    setInstruction({ who: 'Neeli', text: hint }, hintVo);
     L2.busy = true;
-    setTimeout(() => openHint2(c), 800);
+    setTimeout(() => openHint2(c, hint), 800);
+  } else if (L2.attempts === 3) {
+    // 3rd try: show the answer for a few seconds, then the shells go back to the tray — the child sets it
+    const parts = bad.map((r) => `${r.code.goal.toUpperCase()}: ${fmtIndian(codeAnswer(r.code))}`);
+    setInstruction({ who: 'Neeli', text: `Set it like this - ${parts.join(', ')}.`, voiceOnly: true }, 'l2_show');
+    autoArrange(bad, { showOnly: true });
   } else {
+    // 4th try onwards: the game sets it and the hand points at Enter
     const parts = bad.map((r) => `${r.code.goal.toUpperCase()}: ${fmtIndian(codeAnswer(r.code))}`);
     setInstruction({ who: 'Neeli', text: `Set it like this - ${parts.join(', ')}. Then press Enter.`, voiceOnly: true, restore: true }, 'l2_hand');
     autoArrange(bad);
@@ -675,8 +685,10 @@ function lock2Wrong() {
   armIdle2();
 }
 
-// Attempt 3: the shells of the wrong row(s) slide into the right order, then the hand points at Enter
-function autoArrange(rows = L2.rows) {
+// The shells of the wrong row(s) slide into the right order. Attempt 4+: then the hand points at Enter.
+// Attempt 3 (showOnly): the answer stays up ~3.5 s, then the shells go back to the tray to try again.
+const SHOW_ANSWER_MS = 3500;
+function autoArrange(rows = L2.rows, { showOnly = false } = {}) {
   L2.busy = true;
   let t = 250;
   rows.forEach((row) => {
@@ -698,6 +710,20 @@ function autoArrange(rows = L2.rows) {
       t += 200;
     });
   });
+  if (showOnly) {
+    setTimeout(() => {
+      rows.forEach((row) => row.idx.forEach((w) => {
+        const sh = L2.slots[w];
+        if (sh) { sh.slot = null; L2.slots[w] = null; moveShell(sh); }
+      }));
+      sfx('whoosh');
+      refreshWindows();
+      L2.busy = false;
+      setInstruction({ who: 'Neeli', text: "Now it's your turn!", voiceOnly: true, restore: true }, 'l2_your_turn');
+      armIdle2();
+    }, t + SHOW_ANSWER_MS);
+    return;
+  }
   setTimeout(() => {
     L2.busy = false;
     handEl.style.left = `${ENTER_X + 40}px`;
@@ -706,7 +732,7 @@ function autoArrange(rows = L2.rows) {
   }, t + 200);
 }
 
-function openHint2(c = (L2.rows[0] || {}).code || CODES[0]) {
+function openHint2(c = (L2.rows[0] || {}).code || CODES[0], hint = c.hint) {
   // Hint card (sheet): only the title + verdict are on screen; the hint itself is already in the panel
   $('.hint-line').textContent = '';
   $('.hint-line').style.display = 'none';
@@ -723,7 +749,7 @@ function openHint2(c = (L2.rows[0] || {}).code || CODES[0]) {
     towers.appendChild(t);
   });
   rows.appendChild(towers);
-  $('#hint-verdict').textContent = `${c.goal.toUpperCase()}: ${c.hint}`;
+  $('#hint-verdict').textContent = `${c.goal.toUpperCase()}: ${hint}`;
   $('#hint').classList.add('show');
   sfx('sparkle');
 }

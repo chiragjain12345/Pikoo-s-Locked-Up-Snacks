@@ -593,6 +593,8 @@ button { font-family: inherit; cursor: pointer; }
 .choice:not(.locked):active { transform: scale(.97); }
 .choice.hidden { transform: scale(0); opacity: 0; pointer-events: none; }
 .choice.locked { pointer-events: none; }
+/* after 4 wrong tries the wrong option(s) are switched off (Lock 1 numbers, Lock 3 cards) */
+.choice.off, .order-card.off { opacity: .4; filter: grayscale(.85); pointer-events: none; cursor: default; transition: opacity .4s, filter .4s; }
 .choice.wrong { animation: wiggle .6s ease; filter: drop-shadow(0 0 14px var(--red)) drop-shadow(0 0 28px rgba(255, 40, 40, .7)); }
 .choice.wrong .num { color: #d11a10; }
 .choice.right { animation: rightPop .7s cubic-bezier(.2, 1.5, .4, 1); filter: drop-shadow(0 0 16px var(--green)) drop-shadow(0 0 34px rgba(60, 220, 110, .8)); }
