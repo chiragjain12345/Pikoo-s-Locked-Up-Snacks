@@ -103,7 +103,7 @@ const AUDIO_FILES = {
     'howto_pikoo', 'instruction', 'wrong_1', 'wrong_2_hint', 'idle', 'idle_drag', 'l1_hand',
     'l1_correct', 'l2_correct', 'l3_correct', 'l4_correct', 'l5_correct', 'l6_correct', 'l7_correct',
     'l1_done_neeli', 'l1_done_pikoo', 'l2_done_neeli', 'l2_done_pikoo',
-    'l2_howto_pikoo', 'l2_howto_neeli', 'l2_round1', 'l2_round1_drag', 'l2_round2_drag', 'l2_round3_drag', 'l2_round4_drag', 'l2_round2', 'l2_round3', 'l2_round4', 'l2_hint_big', 'l2_hint_small', 'l2_hint_zero', 'l2_hint_zero4', 'l2_hand', 'l2_show', 'l2_your_turn',
+    'l2_howto_pikoo', 'l2_howto_neeli', 'l2_round1', 'l2_round1_drag', 'l2_round2_drag', 'l2_round3_drag', 'l2_round4_drag', 'l2_round2', 'l2_round3', 'l2_round4', 'l2_hint_big', 'l2_hint_small', 'l2_hint_zero', 'l2_hint_zero4', 'l2_hint_zero6', 'l2_hand', 'l2_show', 'l2_your_turn',
     'l2_round1_big_ok', 'l2_round2_big_ok', 'l2_round3_big_ok', 'l2_round4_big_ok',
     'l2_round1_correct', 'l2_round2_correct', 'l2_round3_correct', 'l2_round4_correct',
     'l3_howto_neeli', 'l3_tut_1', 'l3_tut_2', 'l3_tut_3', 'l3_tut_4', 'l3_tut_5',

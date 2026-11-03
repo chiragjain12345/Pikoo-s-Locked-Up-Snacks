@@ -47,7 +47,7 @@ const L2_HOWTO = [
 const HINT_BIG = 'Put the biggest digit first, then the next biggest, and so on.';
 const HINT_SMALL = 'Put the smallest digit first, then the next smallest, and so on.';
 // 2nd wrong answer on a SMALLEST set that has a 0: ask about the length (4 → "four-digit", 6 → "six-digit")
-const hintZero = (n) => `Check again. Is it a ${['', '', '', 'three', 'four', 'five', 'six'][n]}-digit number? Because if you put 0 first, it loses a digit.`;
+const hintZero = (n) => `Check again. Is it a ${['', '', '', 'three', 'four', 'five', 'six'][n]}-digit number? Because if you put 0 first, it loses a place in the number.`;
 
 const CODES = [
   { digits: [5, 2, 8, 1], goal: 'biggest', who: 'Pikoo', hint: HINT_BIG, fb: { who: 'Pikoo', text: 'Biggest number… good!' } },
@@ -666,7 +666,7 @@ function lock2Wrong() {
     const zeroFirst = c.goal === 'smallest' && c.digits.includes(0) && rowBuilt(bad[0])[0] === '0';
     const hint = c.goal === 'smallest' && c.digits.includes(0) && !zeroFirst ? HINT_SMALL : c.hint;
     const hintVo = c.goal === 'biggest' ? 'l2_hint_big'
-      : zeroFirst ? (c.digits.length === 4 ? 'l2_hint_zero4' : 'l2_hint_zero') // "Check again. Is it a four-digit number?…"
+      : zeroFirst ? (c.digits.length === 4 ? 'l2_hint_zero4' : 'l2_hint_zero6') // "Check again. Is it a four/six-digit number?…"
       : 'l2_hint_small';
     setInstruction({ who: 'Neeli', text: hint }, hintVo);
     L2.busy = true;
