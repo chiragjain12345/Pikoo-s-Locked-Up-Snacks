@@ -45,7 +45,7 @@ async function goReveal() {
     const lk = $('#lock1-sprite');
     lk.style.top = `${LOCK_Y[2] - 73}px`;
     lk.querySelectorAll('div').forEach((d) => { d.style.backgroundImage = 'url(assets/images/lock3_sprite.png)'; });
-    $('#shelf-bg').style.backgroundImage = 'url(assets/images/screen3_story_bg_lock3_open.png)';
+    $('#shelf-bg').style.backgroundImage = 'url(assets/images/screen3_story_bg_lock3_open.jpg)';
     showScreen('screen-shelf', true);
   });
   await wait(400);
@@ -106,10 +106,8 @@ async function goReveal() {
   pk.classList.remove('guilty');
   revealBubble.classList.remove('show');
 
-  // Camera shifts over to Mr. Shells
-  $('#cam-reveal').classList.add('to-shells');
-  sfx('whoosh');
-  await wait(1500);
+  // (no camera push-in on Mr. Shells: the art is already a close-up, the zoom cut Neeli off)
+  await wait(400);
   await sayIn(revealBubble, REVEAL[2]);
   sfx('correct');
   starBurst(1700, 560, 14);

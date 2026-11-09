@@ -365,7 +365,7 @@ async function setDone() {
   void progressText.offsetWidth;
   progressText.classList.add('bump');
 
-  await Promise.all([fbDone, wait(2000)]);
+  await Promise.all([fbDone, wait(1200)]);
   if (i < BULBS.length - 1) loadBulb(i + 1);
   else finale3();
 }

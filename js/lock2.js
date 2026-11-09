@@ -8,13 +8,13 @@
 // Shelf scene after each lock: Neeli speaks while the lock opens, then Pikoo swims in from the right
 const SHELF = {
   1: {
-    bg: 'assets/images/screen3_story_bg_lock1_open.png',
+    bg: 'assets/images/screen3_story_bg_lock1_open.jpg',
     sprite: 'assets/images/lock_sprite.png',
     neeli: { id: 'l1_done_neeli', who: 'Neeli', text: 'Bravo!! One lock down.', voiceOnly: true, at: { left: 133, top: 364, width: 560 } },
     pikoo: { id: 'l1_done_pikoo', who: 'Pikoo', text: 'Yayy!! Two more to go!', voiceOnly: true, flip: false, at: { left: 1395, top: 468, width: 440 } },
   },
   2: {
-    bg: 'assets/images/screen3_story_bg_lock2_open.png',
+    bg: 'assets/images/screen3_story_bg_lock2_open.jpg',
     sprite: 'assets/images/lock2_sprite.png',
     neeli: { id: 'l2_done_neeli', who: 'Neeli', text: 'Biggest and smallest, all numbers correctly made - one lock left.', voiceOnly: true, at: { left: 133, top: 364, width: 560 } },
     pikoo: { id: 'l2_done_pikoo', who: 'Pikoo', text: 'Whoever locked this really cares about snacks, huh...', voiceOnly: true, flip: false, shifty: true, at: { left: 1395, top: 448, width: 470 } },
@@ -108,7 +108,7 @@ async function lockComplete(n) {
   // (that scene has its own confetti + applause).
   stopVoice();
   Idle.clear();
-  await wait(600);
+  await wait(300);
   if (n < 3) goShelf(n);
   else goReveal();
 }
@@ -213,33 +213,27 @@ async function goShelf(n = 1) {
   lk.classList.add('fall');
   sfx('whoosh');
   await wait(700);
-  // Lock is open: confetti + applause
+  // Lock is open: confetti + applause — and Pikoo already swims in while Neeli finishes
   confettiBurst();
   sfx('clap');
   sfx('win');
-  await wait(300);
-  await neeliSaid;
-
-  // Pikoo swims in from the right, then says her line
-  neeliBubble.classList.remove('show');
   const pk = $('#pikoo-shelf');
   pk.classList.add('in');
   sfx('swim');
-  await wait(3000);
+  await Promise.all([neeliSaid, wait(1800)]);
+  neeliBubble.classList.remove('show');
   if (cfg.pikoo.shifty) pk.classList.add('shifty');
   const pikooBubble = $('#speech-shelf-pikoo');
   if (!cfg.pikoo.voiceOnly) showStoryBubble(pikooBubble, cfg.pikoo); // voiceOnly: spoken, no bubble
   await sayLine(cfg.pikoo);
-  await wait(300);
   pikooBubble.classList.remove('show');
   pk.classList.remove('shifty');
-  await wait(300);
 
   // Next lock lights up, then the camera zooms in on it
   $('#ring-next').classList.add('show');
   sfx('sparkle');
   sparkles(1068, LOCK_Y[n], 18, 160);
-  await wait(1000);
+  await wait(600);
   const zw = $('#zoom-wrap-shelf');
   sfx('whoosh');
   zw.classList.add('zooming');
@@ -640,7 +634,7 @@ async function codeRight() {
   progressText.classList.add('bump');
   sfx('land');
 
-  await Promise.all([fbDone, wait(2000)]);
+  await Promise.all([fbDone, wait(1200)]);
   if (i < ROUNDS.length - 1) loadCode(i + 1);
   else finale2();
 }

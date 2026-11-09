@@ -147,7 +147,13 @@ const voUrl = (id) => `assets/audio/vos/${id}.mp3${ASSET_V ? `?v=${ASSET_V}` : '
 const voPlayer = new Audio();
 voPlayer.preload = 'auto';
 // warm the browser cache so lines start without a delay (ignored where fetch can't read files)
-AUDIO_FILES.vos.forEach((id) => { try { fetch(voUrl(id)).catch(() => {}); } catch (e) { /* file:// */ } });
+// (starts after the loading screen, so the pictures load first — see js/preload.js)
+function warmVoices() {
+  AUDIO_FILES.vos.forEach((id) => { try { fetch(voUrl(id)).catch(() => {}); } catch (e) { /* file:// */ } });
+  const v = $('#end-video');
+  if (v) { v.preload = 'auto'; v.load(); } // the ending video too
+}
+if (window.GAME_READY) warmVoices(); else window.addEventListener('game-ready', warmVoices, { once: true });
 
 function pickVoice() {
   const voices = window.speechSynthesis ? speechSynthesis.getVoices() : [];
@@ -167,7 +173,7 @@ if (window.speechSynthesis) {
 const SFX_FILE = { pinpop: 'pin pop', bulbon: 'bulb on' };
 
 function sfx(name) {
-  if (!Sound.on) return;
+  if (!Sound.on || window.GAME_PAUSED) return; // no sounds while the tab/window is away
   const pool = Sound.files[`assets/audio/sfxs/${SFX_FILE[name] || name}.mp3`];
   if (pool) {
     const a = pool[pool.i++ % pool.length];
@@ -180,6 +186,7 @@ function sfx(name) {
 
 function stopVoice() {
   if (Sound.current) { Sound.current.pause(); Sound.current = null; }
+  AppPause.voice = null; // a line stopped while the tab was away must not resume later
   if (window.speechSynthesis) speechSynthesis.cancel();
 }
 
@@ -195,6 +202,7 @@ function speak(id, who, text, onStart, onEnd) {
     // file missing / unreadable: say it with text-to-speech instead
     a.onerror = () => { if (Sound.current === a) { Sound.current = null; speakTTS(who, text, onStart, onEnd); } };
     Sound.current = a;
+    if (window.GAME_PAUSED) { AppPause.voice = a; return; } // tab/window away: it plays on return
     a.play().then(() => onStart && onStart()).catch(() => {});
     return;
   }
@@ -211,6 +219,7 @@ function speakTTS(who, text, onStart, onEnd) {
   if (onStart) u.onstart = onStart;
   if (onEnd) u.onend = onEnd;
   speechSynthesis.speak(u);
+  if (window.GAME_PAUSED) speechSynthesis.pause();
 }
 
 function setSound(on) {
@@ -231,9 +240,46 @@ let lastSpeechAt = 0; // when a voice line was last heard playing
   requestAnimationFrame(watchSpeech);
 })();
 function isSpeaking() {
+  if (window.GAME_PAUSED && AppPause.voice) return true; // paused mid-line (tab away): still "speaking"
   if (Sound.current && !Sound.current.paused && !Sound.current.ended) return true;
   return !!(window.speechSynthesis && speechSynthesis.speaking);
 }
+/* ---------------- Pause the game while its tab/window is not active ----------------
+   The whole game freezes when the tab is hidden or the window loses focus, and carries on
+   from the same point when the player comes back: timers, animations (js/pause.js), music +
+   synth sounds (Web Audio), the current voice line, text-to-speech and the ending video. */
+const AppPause = { voice: null, video: null, at: 0 };
+function pauseAllAudio() {
+  if (window.GAME_PAUSED) return;
+  window.GAME_PAUSED = true;
+  AppPause.at = performance.now();
+  if (window.GamePause) GamePause.pause();
+  if (typeof _ctx !== 'undefined' && _ctx && _ctx.state === 'running') _ctx.suspend();
+  const v = Sound.current;
+  if (v && !v.paused && !v.ended) { AppPause.voice = v; v.pause(); }
+  if (window.speechSynthesis && speechSynthesis.speaking) speechSynthesis.pause();
+  const ev = $('#end-video');
+  if (ev && !ev.paused && !ev.ended) { AppPause.video = ev; ev.pause(); }
+}
+function resumeAllAudio() {
+  if (!window.GAME_PAUSED) return;
+  window.GAME_PAUSED = false;
+  if (typeof _ctx !== 'undefined' && _ctx && _ctx.state === 'suspended') _ctx.resume();
+  const v = AppPause.voice;
+  AppPause.voice = null;
+  if (v && Sound.current === v && Sound.on) v.play().catch(() => {});
+  if (window.speechSynthesis) speechSynthesis.resume();
+  if (AppPause.video) { AppPause.video.play().catch(() => {}); AppPause.video = null; }
+  // time spent away doesn't count as "quiet" for the idle reminder
+  const away = performance.now() - AppPause.at;
+  if (typeof Idle !== 'undefined' && Idle.since) Idle.since += away;
+  if (lastSpeechAt) lastSpeechAt += away;
+  if (window.GamePause) GamePause.resume();
+}
+document.addEventListener('visibilitychange', () => (document.hidden ? pauseAllAudio() : resumeAllAudio()));
+window.addEventListener('blur', pauseAllAudio);
+window.addEventListener('focus', () => { if (!document.hidden) resumeAllAudio(); });
+
 const Idle = {
   timer: null,
   ms: 0,
@@ -544,42 +590,73 @@ const coverStart = $('#cover-start');
 // Browsers block sound until the first tap, so we try on load and again on
 // the first tap anywhere on the cover.
 const COVER_VO = { id: 'cover_title', who: 'Title', text: "Pikoo's... Locked Up Snacks!" };
+// The title has its own player, loaded up front, so it starts the instant it's asked for
+// (sharing the voice player meant fetching the file on the tap, and a late start)
+const titleAudio = new Audio();
+titleAudio.preload = 'auto';
+titleAudio.src = voUrl('cover_title');
 let titleBusy = false; // the title is being read right now (taps meanwhile don't restart it)
 function announceTitle() {
-  if (titleBusy || !Sound.on || !$('#screen-cover').classList.contains('active')) return;
-  const ctx = audioCtx();
-  if (!ctx || ctx.state !== 'running') return;
+  if (titleBusy || !Sound.on || window.GAME_PAUSED || !$('#screen-cover').classList.contains('active')) return Promise.resolve(false);
   titleBusy = true;
-  const done = () => { titleBusy = false; $('#screen-cover').classList.remove('announce'); };
-  sfx('correct');
-  sfx('sparkle');
-  $('#screen-cover').classList.add('announce');
-  // the whole picture does a happy little bounce while the title is read
-  $('#screen-cover .cover-bg').animate(
-    [{ scale: 1 }, { scale: 1.03 }, { scale: 1 }, { scale: 1.02 }, { scale: 1 }],
-    { duration: 1600, easing: 'ease-in-out', iterations: 2 }
-  );
-  starBurst(640, 170, 10);
-  starBurst(1280, 170, 10);
-  setTimeout(() => {
-    speak(COVER_VO.id, COVER_VO.who, COVER_VO.text, null, done);
+  const done = () => {
+    if (!titleBusy) return;
+    titleBusy = false;
+    $('#screen-cover').classList.remove('announce');
+  };
+  stopVoice();
+  titleAudio.currentTime = 0;
+  titleAudio.onended = done;
+  Sound.current = titleAudio;
+  // play() is called right inside the tap, so browsers always allow it
+  const started = Promise.resolve(titleAudio.play()).then(() => {
+    // the title is really playing: the cover sparkles with it (no lone "pop" if it can't play)
+    audioCtx();
+    sfx('sparkle');
+    $('#screen-cover').classList.add('announce');
+    starBurst(640, 170, 10);
+    starBurst(1280, 170, 10);
     starBurst(960, 300, 16);
-  }, 650);
-  setTimeout(done, 5000); // fallback if no end event
+    return true;
+  }).catch(() => {
+    // the browser blocked sound before any tap
+    if (Sound.current === titleAudio) Sound.current = null;
+    titleBusy = false;
+    return false;
+  });
+  setTimeout(done, 6000); // fallback if no end event
+  return started;
 }
-// No sound before the first tap. Every tap on the cover (except Start) reads the title again,
-// so a child who missed it can hear it once more.
+// The title plays the moment the game opens. Browsers only allow sound before the first tap on
+// sites they already trust, so: try to play it as the loading screen ends — if that works the home
+// screen appears with the title playing; if the browser blocks it, the loading screen shows
+// "Tap to play", and that tap opens the home screen with the title playing straight away.
+window.TITLE_ON_OPEN = true;
+function openHome() {
+  if (!Sound.on) { hideLoader(); return; }
+  const slow = new Promise((r) => setTimeout(() => r(true), 2500)); // file still loading: just open
+  Promise.race([announceTitle(), slow]).then((played) => {
+    if (played) hideLoader();
+    else showTapToPlay(() => { audioCtx(); announceTitle(); setTimeout(startMusic, 1500); });
+  });
+}
+if (window.GAME_READY) openHome();
+else window.addEventListener('game-ready', openHome, { once: true });
+// Every tap on the cover (except Start) reads the title again — straight away, inside the tap
 $('#screen-cover').addEventListener('pointerdown', (e) => {
-  if (!coverStart.contains(e.target)) setTimeout(announceTitle, 50);
+  if (!coverStart.contains(e.target)) announceTitle();
 });
 // say it again if nobody has tapped Start for a while
 setInterval(() => {
   if ($('#screen-cover').classList.contains('active')) announceTitle();
 }, 20000);
 
+// The narrator starts ~1 s after the first screen is fully showing
+let narrationDelay = 1000;
 coverStart.addEventListener('click', async () => {
   sfx('click');
   coverStart.style.pointerEvents = 'none';
+  narrationDelay = 2000; // the iris still covers the screen for ~1 s after the swap
   await irisTransition(() => {
     showScreen('screen-title', true);
     btnStart.click(); // straight into the narrator scene
@@ -599,8 +676,11 @@ btnStart.addEventListener('click', () => {
     shown = true;
     setTimeout(() => pageFlip('screen-title', goStory1), STORY_PAUSE);
   };
-  speak(NARRATOR_1.id, NARRATOR_1.who, NARRATOR_1.text, null, showNext); // voice only: no box on the title screen
-  setTimeout(showNext, 9500); // fallback when sound is off / unsupported
+  const delay = narrationDelay;
+  narrationDelay = 1000;
+  // voice only (no box on the title screen), a moment after the screen is fully showing
+  setTimeout(() => speak(NARRATOR_1.id, NARRATOR_1.who, NARRATOR_1.text, null, showNext), delay);
+  setTimeout(showNext, delay + 9500); // fallback when sound is off / unsupported
 });
 
 nextTitle.addEventListener('click', () => {
@@ -806,6 +886,10 @@ async function irisTransition(swap) {
   sfx('splash');
   await wait(800);
   swap();
+  // Let the new screen be drawn for the first time while the iris still fully covers it,
+  // so that one-off cost never shows as a jerk while the iris fades away
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  await wait(150);
   tr.classList.remove('open');
   tr.classList.add('close');
   await wait(1400);
@@ -932,22 +1016,16 @@ function setInstruction(line, voId = line.id, onEnd) {
   avatarEl.classList.remove('talk');
   void avatarEl.offsetWidth;
   avatarEl.classList.add('talk');
-  // While the question (or its intro) is being read, the level can't be played yet
-  const isPrompt = line._intro || (currentQuestion && line.text === currentQuestion.line.text);
-  if (isPrompt) lockPlay(true);
+  // While a how-to intro is being read, the level can't be played yet. The question itself
+  // doesn't lock: the child can answer while it is read (it used to block input for up to ~12 s)
+  lockPlay(!!line._intro); // intro: locked while read; anything else (the question): playable at once
   let ended = false;
   const done = (...a) => {
     if (ended) return;
     ended = true;
-    if (isPrompt && !line._intro) lockPlay(false);
     if (onEnd) onEnd(...a);
   };
   speak(voId, line.who, line.text, null, done);
-  if (isPrompt && !line._intro) {
-    // fallback if no voice / no end event: unlock after the line's reading time
-    setTimeout(() => { if (!ended && !isSpeaking()) done(); }, Sound.on ? 1500 + line.text.length * 75 : 300);
-    setTimeout(() => { if (!ended) done(); }, 15000);
-  }
 }
 
 // Voice-only line shown in the instruction panel while it is said. With `restore`, the
@@ -980,12 +1058,17 @@ function lockPlay(on) { game.classList.toggle('vo-lock', on); }
 
 // How-to line(s) play first while the round is already on screen; then the
 // round's own instruction follows — unless the child has already answered.
-function playIntro(lines, after, afterVoId) {
+function playIntro(lines, after, afterVoId, { silentAfter = false } = {}) {
   const list = Array.isArray(lines) ? lines : [lines];
   let k = 0;
   const step = () => {
     if (k > 0 && lastInstrText !== list[k - 1].text) return; // feedback took over
-    if (k === list.length) { setInstruction(after, afterVoId); return; }
+    if (k === list.length) {
+      // silentAfter: the intro already said the task, so the prompt is only shown (not read twice)
+      if (silentAfter) { lastInstrText = after.text; showPanelText(after.text, after.who); lockPlay(false); return; }
+      setInstruction(after, afterVoId);
+      return;
+    }
     const l = Object.assign({ _intro: true }, list[k++]);
     let done = false;
     const next = () => { if (!done) { done = true; setTimeout(step, 250); } };
@@ -1099,7 +1182,7 @@ function loadLevel(i, intro) {
 
   state.pins.forEach((p, idx) => p.classList.toggle('next', idx === i));
   setQuestion(INSTRUCTION);
-  if (intro) playIntro(intro, INSTRUCTION);
+  if (intro) playIntro(intro, INSTRUCTION, undefined, { silentAfter: true });
   else setInstruction(INSTRUCTION);
   state.busy = false;
   armGameIdle();

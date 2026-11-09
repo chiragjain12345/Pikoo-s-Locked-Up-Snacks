@@ -28,7 +28,7 @@ function audioCtx() {
     _musicBus.gain.value = 0;
     _musicBus.connect(_master);
   }
-  if (_ctx.state === 'suspended') _ctx.resume();
+  if (_ctx.state === 'suspended' && !window.GAME_PAUSED) _ctx.resume(); // stays paused while the tab is away
   return _ctx;
 }
 
@@ -303,4 +303,5 @@ function setMusicOn(on) {
 }
 
 // Browsers only allow audio after the first tap
-document.addEventListener('pointerdown', () => { audioCtx(); startMusic(); });
+// (the tune is built a moment later, so it never competes with the Start transition)
+document.addEventListener('pointerdown', () => { audioCtx(); setTimeout(startMusic, 1500); });

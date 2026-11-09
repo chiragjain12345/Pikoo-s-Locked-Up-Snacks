@@ -36,7 +36,7 @@ html, body {
   height: 1080px;
   transform: translate(-50%, -50%) scale(var(--scale, 0.5));
   overflow: hidden;
-  background: #000;
+  background: #2a1a6e; /* game purple: never a black flash if a picture isn't drawn yet */
 }
 
 button { font-family: inherit; cursor: pointer; }
@@ -373,7 +373,7 @@ button { font-family: inherit; cursor: pointer; }
   transition: opacity .4s, transform .5s cubic-bezier(.2, 1.6, .4, 1);
   pointer-events: none;
 }
-.lock-ring.show { opacity: 1; transform: translate(-50%, -50%) scale(1); animation: ringPulse 1.2s ease-in-out infinite .5s; }
+.lock-ring.show { opacity: 1; transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 44px 14px rgba(255, 222, 115, .9), inset 0 0 28px rgba(255, 222, 115, .8); animation: ringPulse 1.2s ease-in-out infinite .5s; }
 .lock-ring span {
   position: absolute;
   left: -36px;
@@ -391,8 +391,8 @@ button { font-family: inherit; cursor: pointer; }
   place-items: center;
 }
 @keyframes ringPulse {
-  0%, 100% { box-shadow: 0 0 30px 8px rgba(255, 215, 90, .85), inset 0 0 24px rgba(255, 215, 90, .7); }
-  50% { box-shadow: 0 0 60px 22px rgba(255, 230, 140, 1), inset 0 0 34px rgba(255, 230, 140, .9); }
+  0%, 100% { scale: 1; }
+  50%      { scale: 1.07; }
 }
 
 /* Zoom into the first lock */
@@ -414,18 +414,26 @@ button { font-family: inherit; cursor: pointer; }
   z-index: 50;
   pointer-events: none;
 }
+/* A round disc that grows from the centre: animated with transform/opacity only, so the
+   graphics card does it (the old clip-path iris was redrawn every frame and stuttered) */
 .transition .iris {
   position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 50%, #fffbe8 0%, #ffe28a 30%, #f7a12a 60%, #7b3fd1 100%);
-  clip-path: circle(0% at 50% 50%);
+  left: 50%;
+  top: 50%;
+  width: 2300px;            /* wider than the 1920×1080 diagonal, so it covers the corners */
+  height: 2300px;
+  margin: -1150px 0 0 -1150px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #fffbe8 0%, #ffe28a 22%, #f7a12a 44%, #7b3fd1 72%);
+  transform: scale(0);
+  will-change: transform, opacity;
 }
 .transition.open .iris { animation: irisOpen .7s cubic-bezier(.6, 0, .4, 1) forwards; }
-.transition.close .iris { clip-path: circle(150% at 50% 50%); animation: irisFade .8s ease forwards; }
-@keyframes irisOpen { to { clip-path: circle(150% at 50% 50%); } }
+.transition.close .iris { transform: scale(1); animation: irisFade .8s ease forwards; }
+@keyframes irisOpen { to { transform: scale(1); } }
 @keyframes irisFade {
-  0% { opacity: 1; clip-path: circle(150% at 50% 50%); }
-  100% { opacity: 0; clip-path: circle(150% at 50% 50%); }
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1); }
 }
 .trans-bubbles { position: absolute; inset: 0; overflow: hidden; }
 .trans-bubbles .bubble { animation: burstRise 1.4s cubic-bezier(.2, .6, .4, 1) forwards; }
@@ -1172,11 +1180,12 @@ button { font-family: inherit; cursor: pointer; }
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #fff 0%, #f4eaff 35%, #cbb8e8 75%, #a58fd0 100%);
   box-shadow: 0 0 10px 3px rgba(255, 255, 255, .85);
+  box-shadow: 0 0 14px 5px rgba(255, 255, 255, .9);
   animation: pearlGlow 1.8s ease-in-out infinite;
 }
 @keyframes pearlGlow {
-  0%, 100% { box-shadow: 0 0 8px 2px rgba(255, 255, 255, .7); }
-  50%      { box-shadow: 0 0 18px 7px rgba(255, 255, 255, 1); }
+  0%, 100% { scale: 1; }
+  50%      { scale: 1.15; }
 }
 /* rising bubbles */
 .enter-bubble {
@@ -1710,11 +1719,9 @@ button { font-family: inherit; cursor: pointer; }
 /* =========================================================
    Cover page
    ========================================================= */
-.cover-bg { transform-origin: 50% 55%; animation: coverBreath 6s ease-in-out infinite alternate; }
-@keyframes coverBreath {
-  from { transform: scale(1); }
-  to   { transform: scale(1.035); }
-}
+/* The cover picture stays still (no zoom / bounce): scaling the whole frame made its top edge
+   — the title and shell arch — visibly shake. The life comes from the shine, twinkles and stars. */
+.cover-bg { transform: none; }
 .cover-pikoo {
   position: absolute;
   left: 127px;
@@ -1778,24 +1785,30 @@ button { font-family: inherit; cursor: pointer; }
 }
 .cover-start {
   position: absolute;
-  left: 763px;
-  top: 975px;
-  width: 398px;
-  height: 92px;
+  /* the complete Start button (assets/images/cover_start.png), fully inside the frame —
+     the one painted in the cover art was cut off by the bottom edge and is painted out */
+  left: 758px;
+  top: 946px;
+  width: 404px;
+  height: 112px;
   padding: 0;
   border: none;
-  border-radius: 46px;
-  background: none;
+  border-radius: 56px;
+  background: url(../assets/images/cover_start.png) center / 100% 100% no-repeat;
   cursor: pointer;
   overflow: hidden;
   z-index: 5;
-  /* soft light pulse on the painted button (no second button shape) */
-  animation: startPulse 1.8s ease-in-out infinite;
+  /* Looks like a real, raised button so it stands out from the art: white ring, solid darker
+     edge underneath, drop shadow, and a gentle bob + glow so the eye goes to it */
+  box-shadow: 0 0 0 5px #fff, 0 11px 0 5px #2b0f6b, 0 18px 26px 4px rgba(0, 0, 0, .45), 0 0 30px 10px rgba(255, 230, 120, .45);
+  animation: startBob 1.6s ease-in-out infinite;
+  transition: filter .15s;
 }
-@keyframes startPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(210, 160, 255, 0); background: rgba(255, 255, 255, 0); }
-  50%      { box-shadow: 0 0 34px 8px rgba(210, 160, 255, .75); background: rgba(255, 255, 255, .12); }
+@keyframes startBob {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -7px; }
 }
+.cover-start:hover { filter: brightness(1.1); }
 .cover-start::after {          /* shine sweeping across the button */
   content: '';
   position: absolute;
@@ -1807,7 +1820,30 @@ button { font-family: inherit; cursor: pointer; }
   transform: skewX(-20deg);
   animation: btnShine 2.6s ease-in-out infinite;
 }
-.cover-start:active { filter: brightness(.9); }
+.cover-start:active {   /* pressed: sinks onto its edge */
+  animation: none;
+  translate: 0 8px;
+  filter: brightness(.92);
+  box-shadow: 0 0 0 5px #fff, 0 3px 0 5px #2b0f6b, 0 6px 12px 2px rgba(0, 0, 0, .4);
+}
+/* little hand tapping the Start button: "tap here" */
+.cover-hand {
+  position: absolute;
+  left: 1100px;
+  top: 972px;
+  font-size: 92px;
+  line-height: 1;
+  z-index: 6;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, .45));
+  opacity: 0;
+  animation: coverHandIn .4s ease-out 1.5s forwards, coverHandTap 1.2s ease-in-out 1.9s infinite;
+}
+@keyframes coverHandIn { to { opacity: 1; } }
+@keyframes coverHandTap {
+  0%, 100% { transform: translate(0, 0) rotate(-18deg); }
+  45%      { transform: translate(-12px, -18px) rotate(-18deg) scale(.92); }
+}
 
 
 
@@ -1849,6 +1885,7 @@ button { font-family: inherit; cursor: pointer; }
 .screen:not(.active):not(.page-out),
 .screen:not(.active):not(.page-out) * {
   animation-play-state: paused !important;
+  will-change: auto !important; /* hidden screens don't hold graphics memory */
 }
 @media (prefers-reduced-motion: reduce) {
   .light-rays, .bubbles { display: none; }
@@ -2107,15 +2144,15 @@ button { font-family: inherit; cursor: pointer; }
   padding: 8px 28px 10px;
   border: 3px solid #fff;
   background: linear-gradient(180deg, #8a4dff, #5a1fc7);
-  box-shadow: 0 4px 0 #3a1385, 0 0 0 4px rgba(138, 77, 255, .25);
+  box-shadow: 0 4px 0 #3a1385, 0 0 0 5px rgba(138, 77, 255, .3), 0 0 20px rgba(138, 77, 255, .6);
   animation: orderGlow 1.8s ease-in-out infinite;
 }
 #screen-game .code-tag.order-tag span { font-size: 24px; opacity: 1; }
 /* same purple for ascending and descending (consistent look; the words say which order) */
 #screen-game .code-tag.order-tag.swap { animation: popIn .4s cubic-bezier(.2, 1.6, .4, 1), orderGlow 1.8s ease-in-out infinite .4s; }
 @keyframes orderGlow {
-  0%, 100% { box-shadow: 0 4px 0 #3a1385, 0 0 0 4px rgba(138, 77, 255, .25), 0 0 10px rgba(138, 77, 255, .35); }
-  50%      { box-shadow: 0 4px 0 #3a1385, 0 0 0 7px rgba(138, 77, 255, .35), 0 0 26px rgba(138, 77, 255, .75); }
+  0%, 100% { scale: 1; }
+  50%      { scale: 1.04; }
 }
 
 /* While the instruction voice-over plays, the level can't be touched yet */
@@ -2280,3 +2317,52 @@ button { font-family: inherit; cursor: pointer; }
 
 /* Mr. Shells' mouth on the reveal screen (front view): 0 closed, 1 half, 2 open, 3 three-quarter */
 .crab-mouth.crab-mouth-front { background-image: url(../assets/images/crab_front_mouth_strip.png); z-index: 3; }
+
+/* ---------- Loading screen (js/preload.js) ---------- */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  background: radial-gradient(ellipse at 50% 40%, #6b4ad8 0%, #3a2190 55%, #1c1150 100%);
+  color: #fff6d8;
+  font-family: 'Poppins', 'Inter', system-ui, sans-serif;
+  transition: opacity .6s ease;
+}
+.loader.done { opacity: 0; pointer-events: none; }
+.loader-title { font-size: clamp(22px, 4.2vw, 54px); font-weight: 800; text-shadow: 0 4px 0 rgba(0, 0, 0, .25); text-align: center; padding: 0 16px; }
+.loader-bar {
+  width: min(70vw, 560px);
+  height: 22px;
+  border-radius: 999px;
+  border: 3px solid #ffe2a3;
+  background: rgba(0, 0, 0, .25);
+  overflow: hidden;
+}
+.loader-fill {
+  width: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffd25a, #f58a0b);
+  transition: width .25s ease;
+}
+.loader-pct { font-size: 20px; font-weight: 700; opacity: .85; }
+.loader.tap .loader-bar, .loader.tap .loader-pct { display: none; }
+.loader-play {
+  padding: 18px 56px 22px;
+  border-radius: 999px;
+  border: 5px solid #fff;
+  background: linear-gradient(180deg, #ffbd45, #f58a0b);
+  box-shadow: 0 8px 0 #9a4a00, 0 14px 28px rgba(0, 0, 0, .4);
+  color: #fff;
+  font: 800 clamp(24px, 3.2vw, 40px)/1 'Poppins', system-ui, sans-serif;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, .25);
+  cursor: pointer;
+  animation: loaderPlay 1.4s ease-in-out infinite;
+}
+.loader-play:active { translate: 0 6px; box-shadow: 0 2px 0 #9a4a00, 0 6px 14px rgba(0, 0, 0, .4); }
+@keyframes loaderPlay { 0%, 100% { scale: 1; } 50% { scale: 1.06; } }
