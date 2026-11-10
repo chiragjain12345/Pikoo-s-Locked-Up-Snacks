@@ -58,6 +58,8 @@ const LOCK_Y = [300, 490, 680]; // lock centres on screen 3 (x = 1068)
 
 const HOW_TO = { id: 'howto_pikoo', who: 'Pikoo', text: 'Seven little pins. Tap the bigger number and a pin pops loose!' };
 const INSTRUCTION = { id: 'instruction', who: 'Neeli', text: 'Tap the bigger number.' };
+// pins 1 and 2 use the full line; from pin 3 on, the short one
+const INSTRUCTION_LONG = { id: 'instruction_long', who: 'Neeli', text: 'Tap the bigger number and a pin pops loose!' };
 // Praise after the child needed wrong tries: no "easy / you got it" lines, just a plain "Good job!"
 const RETRY_FB = { id: 'l2_correct', who: 'Neeli', text: 'Good job!' };
 const WRONG_1 = { id: 'wrong_1', who: 'Neeli', text: 'Oops! Try Again.', voiceOnly: true, restore: true };
@@ -100,7 +102,7 @@ const AUDIO_FILES = {
   // cut from the per-character recordings (neeli / pikko / mr shell / narrator acfe .mp3)
   vos: [
     'cover_title', 's1_narrator', 's2_shells', 's2_pikoo', 's3_neeli',
-    'howto_pikoo', 'instruction', 'wrong_1', 'wrong_2_hint', 'idle', 'idle_drag', 'l1_hand',
+    'howto_pikoo', 'instruction', 'instruction_long', 'wrong_1', 'wrong_2_hint', 'idle', 'idle_drag', 'l1_hand',
     'l1_correct', 'l2_correct', 'l3_correct', 'l4_correct', 'l5_correct', 'l6_correct', 'l7_correct',
     'l1_done_neeli', 'l1_done_pikoo', 'l2_done_neeli', 'l2_done_pikoo',
     'l2_howto_pikoo', 'l2_howto_neeli', 'l2_round1', 'l2_round1_drag', 'l2_round2_drag', 'l2_round3_drag', 'l2_round4_drag', 'l2_round2', 'l2_round3', 'l2_round4', 'l2_hint_big', 'l2_hint_small', 'l2_hint_zero', 'l2_hint_zero4', 'l2_hint_zero6', 'l2_hand', 'l2_show', 'l2_your_turn',
@@ -1181,9 +1183,10 @@ function loadLevel(i, intro) {
   });
 
   state.pins.forEach((p, idx) => p.classList.toggle('next', idx === i));
-  setQuestion(INSTRUCTION);
-  if (intro) playIntro(intro, INSTRUCTION, undefined, { silentAfter: true });
-  else setInstruction(INSTRUCTION);
+  const instr = i < 2 ? INSTRUCTION_LONG : INSTRUCTION;
+  setQuestion(instr);
+  if (intro) playIntro(intro, instr, undefined, { silentAfter: true }); // pin 1: the how-to already says it
+  else setInstruction(instr);
   state.busy = false;
   armGameIdle();
 }

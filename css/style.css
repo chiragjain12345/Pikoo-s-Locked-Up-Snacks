@@ -403,7 +403,7 @@ button { font-family: inherit; cursor: pointer; }
 }
 .zoom-wrap.zooming {
   transition: transform 1.7s cubic-bezier(.7, 0, .3, 1), filter 1.7s ease-in;
-  transform: translate(-108px, 240px) scale(7);
+  transform: translate(-108px, 240px) scale(2.6); /* lock centred, balanced zoom (was 7×) */
   filter: brightness(1.25) saturate(1.2);
 }
 
@@ -887,7 +887,7 @@ button { font-family: inherit; cursor: pointer; }
    Shelf screen — lock 1 opens, then the camera zooms into lock 2
    ========================================================= */
 #zoom-wrap-shelf { transform-origin: 1068px 490px; }
-#zoom-wrap-shelf.zooming { transform: translate(-108px, var(--zoom-ty, 50px)) scale(7); }
+#zoom-wrap-shelf.zooming { transform: translate(-108px, var(--zoom-ty, 50px)) scale(2.6); }
 #screen-shelf .neeli-actor { transform: translate(228px, 609px); }
 
 /* Pikoo swims in from the right on the shelf screen, facing Neeli */

@@ -658,7 +658,13 @@ function lock2Wrong() {
     // The "0 in front" message only when the child's number really starts with 0;
     // any other wrong SMALLEST answer gets the normal smallest hint
     const zeroFirst = c.goal === 'smallest' && c.digits.includes(0) && rowBuilt(bad[0])[0] === '0';
-    const hint = c.goal === 'smallest' && c.digits.includes(0) && !zeroFirst ? HINT_SMALL : c.hint;
+    // 0 in front: show what really happens to the child's own number ('0347' is just '347')
+    const built = rowBuilt(bad[0]);
+    // the recorded lines use fixed examples (0347 / 014297), so the text matches the voice word for word
+    const zeroEg = c.digits.length === 4 ? '0347' : c.digits.length === 6 ? '014297' : built;
+    const hint = zeroFirst
+      ? `A number can't start with 0 - then '${zeroEg}' is just '${zeroEg.replace(/^0+/, '') || '0'}'. Put 0 after a bigger digit.`
+      : c.goal === 'smallest' && c.digits.includes(0) ? HINT_SMALL : c.hint;
     const hintVo = c.goal === 'biggest' ? 'l2_hint_big'
       : zeroFirst ? (c.digits.length === 4 ? 'l2_hint_zero4' : 'l2_hint_zero6') // "Check again. Is it a four/six-digit number?…"
       : 'l2_hint_small';

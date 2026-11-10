@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=236" />
+  <link rel="stylesheet" href="css/style.css?v=241" />
 </head>
 <body>
   <!-- Loading screen (js/preload.js): the game appears once all its pictures are ready -->
@@ -23,7 +23,7 @@
     <!-- ============ COVER PAGE ============ -->
     <section class="screen active" id="screen-cover">
       <!-- Everything that sits on the picture moves with it, so nothing can drift or double up -->
-      <div class="bg cover-bg" style="background-image:url(assets/images/cover.jpg?v=236)">
+      <div class="bg cover-bg" style="background-image:url(assets/images/cover.jpg?v=241)">
         <div class="cover-title-shine" aria-hidden="true"></div>
         <div class="cover-twinkles" id="cover-twinkles" aria-hidden="true"></div>
         <!-- the Start button painted in the picture is the tap area; glow + shine are drawn on top of it -->
@@ -35,7 +35,7 @@
 
     <section class="screen" id="screen-title">
       <div class="cam" id="cam-title">
-        <div class="bg slow-zoom" style="background-image:url(assets/images/screen1_title_bg.jpg)"><img class="title-turtle" src="assets/images/turtle_title.png?v=236" alt="" /></div>
+        <div class="bg slow-zoom" style="background-image:url(assets/images/screen1_title_bg.jpg)"><img class="title-turtle" src="assets/images/turtle_title.png?v=241" alt="" /></div>
       </div>
       <div class="bubbles" aria-hidden="true"></div>
       <h1 class="ost-title" hidden>Pikoo's Locked Up Snacks</h1>
@@ -102,7 +102,7 @@
         <div class="bg" style="background-image:url(assets/images/screen3_story_bg_lock3_open.jpg)"></div>
         <img class="shelf-open" id="shelf-open" src="assets/images/shelf_open.png" alt="" />
         <div class="glass-door-track"><div class="glass-door" id="glass-door"></div></div>
-        <img class="shells-front" src="assets/images/shells_front.png?v=236" alt="" />
+        <img class="shells-front" src="assets/images/shells_front.png?v=241" alt="" />
         <div class="neeli-actor" id="neeli-end"><div class="neeli-body fig"><img class="neeli-char" src="assets/images/char_neeli.png" alt="Neeli" /></div></div>
         <div class="pikoo-from-right" id="pikoo-end"><img src="assets/images/char_pikoo.png" alt="Pikoo" /></div>
         <div class="note" id="note"><span>Snacks arranged<br />and locked.<br /><b>- Pikoo</b></span></div>
@@ -227,19 +227,19 @@
     <button class="sound-toggle" id="sound-toggle" aria-label="Toggle sound">🔊</button>
   </div>
 
-  <script src="js/pause.js?v=236"></script>
-  <script src="js/preload.js?v=236"></script>
+  <script src="js/pause.js?v=241"></script>
+  <script src="js/preload.js?v=241"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <!-- TEST MENU (☰): only loads when the address has ?dev=1 (e.g. index.html?dev=1) -->
-  <script>if (new URLSearchParams(location.search).get('dev') === '1') document.write('<script src="js/debug-menu.js?v=236"><\/script>');</script>
-  <script src="js/sound.js?v=236"></script>
-  <script src="js/game.js?v=236"></script>
-  <script src="js/lock2.js?v=236"></script>
-  <script src="js/lock3.js?v=236"></script>
-  <script src="js/ending.js?v=236"></script>
-  <script src="js/fx.js?v=236"></script>
-  <script src="js/blink.js?v=236"></script>
-  <script src="js/talkers.js?v=236"></script>
-  <script src="js/avatar.js?v=236"></script>
+  <script>if (new URLSearchParams(location.search).get('dev') === '1') document.write('<script src="js/debug-menu.js?v=241"><\/script>');</script>
+  <script src="js/sound.js?v=241"></script>
+  <script src="js/game.js?v=241"></script>
+  <script src="js/lock2.js?v=241"></script>
+  <script src="js/lock3.js?v=241"></script>
+  <script src="js/ending.js?v=241"></script>
+  <script src="js/fx.js?v=241"></script>
+  <script src="js/blink.js?v=241"></script>
+  <script src="js/talkers.js?v=241"></script>
+  <script src="js/avatar.js?v=241"></script>
 </body>
 </html>
