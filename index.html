@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=241" />
+  <link rel="stylesheet" href="css/style.css?v=247" />
 </head>
 <body>
   <!-- Loading screen (js/preload.js): the game appears once all its pictures are ready -->
@@ -23,19 +23,18 @@
     <!-- ============ COVER PAGE ============ -->
     <section class="screen active" id="screen-cover">
       <!-- Everything that sits on the picture moves with it, so nothing can drift or double up -->
-      <div class="bg cover-bg" style="background-image:url(assets/images/cover.jpg?v=241)">
+      <div class="bg cover-bg" style="background-image:url(assets/images/cover.jpg?v=247)">
         <div class="cover-title-shine" aria-hidden="true"></div>
         <div class="cover-twinkles" id="cover-twinkles" aria-hidden="true"></div>
         <!-- the Start button painted in the picture is the tap area; glow + shine are drawn on top of it -->
         <button class="cover-start" id="cover-start" aria-label="Start"></button>
-        <div class="cover-hand" aria-hidden="true">👆</div>
       </div>
       <div class="bubbles" aria-hidden="true"></div>
     </section>
 
     <section class="screen" id="screen-title">
       <div class="cam" id="cam-title">
-        <div class="bg slow-zoom" style="background-image:url(assets/images/screen1_title_bg.jpg)"><img class="title-turtle" src="assets/images/turtle_title.png?v=241" alt="" /></div>
+        <div class="bg slow-zoom" style="background-image:url(assets/images/screen1_title_bg.jpg)"><img class="title-turtle" src="assets/images/turtle_title.png?v=247" alt="" /></div>
       </div>
       <div class="bubbles" aria-hidden="true"></div>
       <h1 class="ost-title" hidden>Pikoo's Locked Up Snacks</h1>
@@ -47,7 +46,7 @@
     <section class="screen" id="screen-story1">
       <div class="bg kenburns" style="background-image:url(assets/images/screen2_story_bg.jpg)"></div>
       <div class="bubbles" aria-hidden="true"></div>
-      <div class="actor-pikoo" id="pikoo-actor"><img src="assets/images/char_pikoo.png" alt="Pikoo" /></div>
+      <div class="actor-pikoo" id="pikoo-actor"><img src="assets/images/char_pikoo.webp" alt="Pikoo" /></div>
       <div class="speech" id="speech-story1">
         <img class="speech-bg" alt="" />
         <span class="speaker"></span>
@@ -60,7 +59,7 @@
     <section class="screen" id="screen-story2">
       <div class="zoom-wrap" id="zoom-wrap">
         <div class="bg" style="background-image:url(assets/images/screen3_story_bg_no_neeli.jpg)"></div>
-        <div class="neeli-actor" id="neeli-actor"><div class="neeli-body fig"><img class="neeli-char" src="assets/images/char_neeli.png" alt="Neeli" /></div></div>
+        <div class="neeli-actor" id="neeli-actor"><div class="neeli-body fig"><img class="neeli-char" src="assets/images/char_neeli.webp" alt="Neeli" /></div></div>
         <div class="lock-ring" data-lock="1" style="left:1068px;top:300px"><span>1</span></div>
         <div class="lock-ring" data-lock="2" style="left:1068px;top:490px"><span>2</span></div>
         <div class="lock-ring" data-lock="3" style="left:1068px;top:680px"><span>3</span></div>
@@ -80,8 +79,8 @@
         <div class="bg" id="shelf-bg"></div>
         <div class="lock1-sprite" id="lock1-sprite"><div class="shackle"></div><div class="body"></div></div>
         <div class="lock-ring" id="ring-next" style="left:1068px;top:490px"><span>2</span></div>
-        <div class="neeli-actor"><div class="neeli-body fig"><img class="neeli-char" src="assets/images/char_neeli.png" alt="Neeli" /></div></div>
-        <div class="pikoo-from-right" id="pikoo-shelf"><img src="assets/images/char_pikoo.png" alt="Pikoo" /></div>
+        <div class="neeli-actor"><div class="neeli-body fig"><img class="neeli-char" src="assets/images/char_neeli.webp" alt="Neeli" /></div></div>
+        <div class="pikoo-from-right" id="pikoo-shelf"><img src="assets/images/char_pikoo.webp" alt="Pikoo" /></div>
       </div>
       <div class="bubbles" aria-hidden="true"></div>
       <div class="speech" id="speech-shelf-neeli">
@@ -99,12 +98,12 @@
     <!-- ============ ENDING : who locked it? + the cafe opens (js/ending.js) ============ -->
     <section class="screen" id="screen-reveal">
       <div class="cam" id="cam-reveal">
-        <div class="bg" style="background-image:url(assets/images/screen3_story_bg_lock3_open.jpg)"></div>
-        <img class="shelf-open" id="shelf-open" src="assets/images/shelf_open.png" alt="" />
+        <div class="bg reveal-bg" style="background-image:url(assets/images/screen3_story_bg_reveal_wide.jpg)"></div>
+        <img class="shelf-open" id="shelf-open" src="assets/images/shelf_open.webp" alt="" />
         <div class="glass-door-track"><div class="glass-door" id="glass-door"></div></div>
-        <img class="shells-front" src="assets/images/shells_front.png?v=241" alt="" />
-        <div class="neeli-actor" id="neeli-end"><div class="neeli-body fig"><img class="neeli-char" src="assets/images/char_neeli.png" alt="Neeli" /></div></div>
-        <div class="pikoo-from-right" id="pikoo-end"><img src="assets/images/char_pikoo.png" alt="Pikoo" /></div>
+        <div class="crab-full" aria-hidden="true"><img src="assets/images/crab_full.webp" alt="" /></div>
+        <div class="neeli-actor" id="neeli-end"><div class="neeli-body fig"><img class="neeli-char" src="assets/images/char_neeli.webp" alt="Neeli" /></div></div>
+        <div class="pikoo-from-right" id="pikoo-end"><img src="assets/images/char_pikoo.webp" alt="Pikoo" /></div>
         <div class="note" id="note"><span>Snacks arranged<br />and locked.<br /><b>- Pikoo</b></span></div>
       </div>
       <div class="bubbles" aria-hidden="true"></div>
@@ -118,7 +117,7 @@
         <div class="crowd" id="crowd"></div>
         <div class="happy-fx" id="happy-fx" aria-hidden="true"></div>
         <div class="open-sign" id="open-sign"><span>OPEN</span></div>
-        <img class="cafe-signboard" src="assets/images/cafe_signboard.png" alt="" />
+        <img class="cafe-signboard" src="assets/images/cafe_signboard.webp" alt="" />
       </div>
       <div class="doors" id="doors"><div class="door left"></div><div class="door right"></div></div>
       <div class="bubbles" aria-hidden="true"></div>
@@ -134,24 +133,24 @@
 
       <!-- Top instruction panel -->
       <div class="top-panel" id="top-panel">
-        <img class="instruction-panel" src="assets/images/instruction_panel.png" alt="" />
-        <img class="avatar" id="avatar" src="assets/images/neeli_avatar.png" alt="Neeli" />
+        <img class="instruction-panel" src="assets/images/instruction_panel.webp" alt="" />
+        <img class="avatar" id="avatar" src="assets/images/neeli_avatar.webp" alt="Neeli" />
         <div class="speaker-chip" id="speaker-chip">Neeli</div>
         <p class="instruction-text" id="instruction-text"></p>
       </div>
 
       <!-- Lock board -->
       <div class="board" id="board">
-        <img class="lock-board" src="assets/images/lock_board.png" alt="" />
+        <img class="lock-board" src="assets/images/lock_board.webp" alt="" />
         <div class="board-shine"></div>
       </div>
 
       <button class="choice" id="choice-a" style="left:397px;top:537px">
-        <img src="assets/images/number_button.png" alt="" />
+        <img src="assets/images/number_button.webp" alt="" />
         <span class="num"></span>
       </button>
       <button class="choice" id="choice-b" style="left:890.15px;top:532.9px">
-        <img src="assets/images/number_button.png" alt="" />
+        <img src="assets/images/number_button.webp" alt="" />
         <span class="num"></span>
       </button>
 
@@ -227,19 +226,19 @@
     <button class="sound-toggle" id="sound-toggle" aria-label="Toggle sound">🔊</button>
   </div>
 
-  <script src="js/pause.js?v=241"></script>
-  <script src="js/preload.js?v=241"></script>
+  <script src="js/pause.js?v=247"></script>
+  <script src="js/preload.js?v=247"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <!-- TEST MENU (☰): only loads when the address has ?dev=1 (e.g. index.html?dev=1) -->
-  <script>if (new URLSearchParams(location.search).get('dev') === '1') document.write('<script src="js/debug-menu.js?v=241"><\/script>');</script>
-  <script src="js/sound.js?v=241"></script>
-  <script src="js/game.js?v=241"></script>
-  <script src="js/lock2.js?v=241"></script>
-  <script src="js/lock3.js?v=241"></script>
-  <script src="js/ending.js?v=241"></script>
-  <script src="js/fx.js?v=241"></script>
-  <script src="js/blink.js?v=241"></script>
-  <script src="js/talkers.js?v=241"></script>
-  <script src="js/avatar.js?v=241"></script>
+  <script>if (new URLSearchParams(location.search).get('dev') === '1') document.write('<script src="js/debug-menu.js?v=247"><\/script>');</script>
+  <script src="js/sound.js?v=247"></script>
+  <script src="js/game.js?v=247"></script>
+  <script src="js/lock2.js?v=247"></script>
+  <script src="js/lock3.js?v=247"></script>
+  <script src="js/ending.js?v=247"></script>
+  <script src="js/fx.js?v=247"></script>
+  <script src="js/blink.js?v=247"></script>
+  <script src="js/talkers.js?v=247"></script>
+  <script src="js/avatar.js?v=247"></script>
 </body>
 </html>

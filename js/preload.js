@@ -13,14 +13,14 @@
   // Images used only from scripts (everything in the page and in css/style.css is found automatically).
   // Keep the exact spelling used in the code, including any ?v= — a different URL would download twice.
   const JS_IMAGES = [
-    'assets/images/char_pikoo.png', 'assets/images/char_neeli.png', 'assets/images/pikoo.png',
-    'assets/images/neeli_avatar.png', 'assets/images/neeli_talk_blink_strip.png',
-    'assets/images/neeli_sad_blink_strip.png', 'assets/images/neeli_happy_anim_strip.png',
+    'assets/images/char_pikoo.webp', 'assets/images/char_neeli.webp', 'assets/images/pikoo.webp',
+    'assets/images/neeli_avatar.webp', 'assets/images/neeli_talk_blink_strip.webp',
+    'assets/images/neeli_sad_blink_strip.webp', 'assets/images/neeli_happy_anim_strip.webp',
     'assets/images/dialogue_neeli.png', 'assets/images/dialogue_pikoo.png', 'assets/images/dialogue_shells.png',
-    'assets/images/lock_board.png', 'assets/images/lock2_board.png', 'assets/images/lock2_board.png?v=2',
+    'assets/images/lock_board.webp', 'assets/images/lock2_board.webp', 'assets/images/lock2_board.webp?v=2',
     'assets/images/lock_sprite.png', 'assets/images/lock2_sprite.png', 'assets/images/lock3_sprite.png',
-    'assets/images/pin.png', 'assets/images/shell_tile.png', 'assets/images/number_card.png',
-    'assets/images/shell_bulb_off.png?v=2', 'assets/images/shell_bulb_on.png?v=2',
+    'assets/images/pin.webp', 'assets/images/shell_tile.webp', 'assets/images/number_card.webp',
+    'assets/images/shell_bulb_off.webp?v=2', 'assets/images/shell_bulb_on.webp?v=2',
     'assets/images/screen3_story_bg_lock1_open.jpg', 'assets/images/screen3_story_bg_lock2_open.jpg',
     'assets/images/screen3_story_bg_lock3_open.jpg',
     'assets/images/pikoo_eye0_mask.png', 'assets/images/pikoo_eye1_mask.png',

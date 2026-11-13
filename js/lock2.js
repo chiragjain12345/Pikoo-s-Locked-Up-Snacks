@@ -135,7 +135,7 @@ async function lockCompleteCard(n) {
   for (const l of lines) {
     const row = document.createElement('div');
     row.className = `win-line ${l.who === 'Pikoo' ? 'pikoo' : ''}`;
-    const img = l.who === 'Pikoo' ? 'assets/images/char_pikoo.png' : 'assets/images/char_neeli.png';
+    const img = l.who === 'Pikoo' ? 'assets/images/char_pikoo.webp' : 'assets/images/char_neeli.webp';
     row.innerHTML = `<img src="${img}" alt="${l.who}" /><span>${l.text}</span>`;
     linesEl.appendChild(row);
     speak(l.id, l.who, l.text);
@@ -381,7 +381,7 @@ function buildShells(i) {
     el.className = 'shell enter';
     el.style.width = `${g.shellW}px`;
     el.style.height = `${g.shellH}px`;
-    el.innerHTML = `<img src="assets/images/shell_tile.png" alt="" /><span class="shell-digit">${d}</span>`;
+    el.innerHTML = `<img src="assets/images/shell_tile.webp" alt="" /><span class="shell-digit">${d}</span>`;
     el.style.animationDelay = `${0.15 + k * 0.06}s`;
     const x = cols[k] - g.shellW / 2;
     const home = { x, y: g.trayTop + (g.trayH - g.shellH) / 2 };

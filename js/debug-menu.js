@@ -82,7 +82,7 @@
     for (let i = 0; i < released; i++) {
       state.pins[i].style.visibility = 'hidden';
       const img = document.createElement('img');
-      img.src = 'assets/images/pin.png';
+      img.src = 'assets/images/pin.webp';
       img.className = 'socket-pin';
       img.alt = '';
       state.sockets[i].appendChild(img);

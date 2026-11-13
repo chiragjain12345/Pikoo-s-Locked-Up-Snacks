@@ -8,16 +8,16 @@
    ========================================================= */
 const AV_CHARS = {
   // Neeli = the blue whale (neeli updated) talk + blink sprite sheet (8 frames, 463x291 each)
-  Neeli: { strip: 'assets/images/neeli_talk_blink_strip.png', frames: 8, fw: 463, fh: 291, left: 130, top: 102, width: 250, clip: 'circle(110px at 138px 73px)' },
-  Pikoo: { src: 'assets/images/char_pikoo.png', key: 'pikoo', mirror: false, left: 150, top: 70, width: 236 },
+  Neeli: { strip: 'assets/images/neeli_talk_blink_strip.webp', frames: 8, fw: 463, fh: 291, left: 130, top: 102, width: 250, clip: 'circle(110px at 138px 73px)' },
+  Pikoo: { src: 'assets/images/char_pikoo.webp', key: 'pikoo', mirror: false, left: 150, top: 70, width: 236 },
 };
 Object.values(AV_CHARS).forEach((c) => { const i = new Image(); i.src = c.src || c.strip; });
 const NEELI_TALK = [0, 1, 2, 1, 3, 2, 1, 0]; // top row: mouth moving
 const NEELI_BLINK = [5, 6, 6, 6, 5];
-const NEELI_SAD_STRIP = 'assets/images/neeli_sad_blink_strip.png'; // wrong answer (same 463x291 cells)
+const NEELI_SAD_STRIP = 'assets/images/neeli_sad_blink_strip.webp'; // wrong answer (same 463x291 cells)
 const NEELI_SAD = [0, 1, 2, 1, 1, 3, 3, 5, 6, 5, 3]; // droop, sad mouth, sad blink
 const NEELI_SAD_TALK = [1, 2, 1, 2, 3, 2, 1]; // still sad, mouth moving (a long hint keeps this face)
-const NEELI_HAPPY_STRIP = 'assets/images/neeli_happy_anim_strip.png'; // right answer (6 frames, 463x291 cells)
+const NEELI_HAPPY_STRIP = 'assets/images/neeli_happy_anim_strip.webp'; // right answer (6 frames, 463x291 cells)
 const NEELI_HAPPY = [0, 1, 2, 3, 4, 5];
 // Each sheet keeps its own layer (switched by opacity), so changing mood never repaints an
 // undecoded image — swapping background-image used to flash an empty circle on wrong answers.

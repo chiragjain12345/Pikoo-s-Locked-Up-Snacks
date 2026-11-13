@@ -1,8 +1,8 @@
 /* =========================================================
    Story characters that talk with sprite sheets:
-   - Pikoo (yellow fish): talk + blink frames (fish_talk_blink_strip.png)
+   - Pikoo (yellow fish): talk + blink frames (fish_talk_blink_strip.webp)
    - Mr. Shells on story screen 2: only his mouth area is swapped with the
-     crab talk frames (crab_mouth_strip.png), so the painted crab stays as is.
+     crab talk frames (crab_mouth_strip.webp), so the painted crab stays as is.
    Mouths move only while that character's voice line is playing.
    ========================================================= */
 const talkUntil = { Pikoo: 0, 'Mr. Shells': 0, Neeli: 0 };

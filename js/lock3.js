@@ -58,7 +58,7 @@ function buildBulbs() {
     b.className = 'bulb';
     b.style.left = `${HOLES_X[i] - 48}px`;
     b.style.top = `${HOLE_Y - 100}px`; // brass cup sits over the hole
-    b.innerHTML = '<img class="off" src="assets/images/shell_bulb_off.png?v=2" alt="" /><img class="on" src="assets/images/shell_bulb_on.png?v=2" alt="" />';
+    b.innerHTML = '<img class="off" src="assets/images/shell_bulb_off.webp?v=2" alt="" /><img class="on" src="assets/images/shell_bulb_on.webp?v=2" alt="" />';
     bulbsEl.appendChild(b);
   }
 }
@@ -254,7 +254,7 @@ function buildRow(b) {
   L3.cards = (b.show || shuffled(b.nums)).map((num, k) => {
     const el = document.createElement('button');
     el.className = 'order-card enter';
-    el.innerHTML = `<img src="assets/images/number_card.png" alt="" /><span>${num}</span>`;
+    el.innerHTML = `<img src="assets/images/number_card.webp" alt="" /><span>${num}</span>`;
     el.style.left = `${left + k * (CARD_W + CARD_GAP)}px`;
     el.style.top = `${CARD_TOP}px`;
     el.style.height = `${CARD_ROW_H}px`;

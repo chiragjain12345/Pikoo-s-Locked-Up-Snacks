@@ -337,7 +337,7 @@ button { font-family: inherit; cursor: pointer; }
 .neeli-actor .neeli-gif {
   position: relative;
   aspect-ratio: 630 / 390;
-  background: url(../assets/images/neeli_sheet.png) 0 0 / 600% 600% no-repeat;
+  background: url(../assets/images/neeli_sheet.webp) 0 0 / 600% 600% no-repeat;
   transform: scaleX(-1);
 }
 .speech.neeli.show { animation: bobY 3s ease-in-out infinite; }
@@ -1167,7 +1167,7 @@ button { font-family: inherit; cursor: pointer; }
   position: relative;
   width: 54px;
   height: 48px;
-  background: url(../assets/images/shell_tile.png) center / contain no-repeat;
+  background: url(../assets/images/shell_tile.webp) center / contain no-repeat;
   filter: drop-shadow(0 3px 0 rgba(0, 0, 0, .2));
 }
 .enter-pearl {
@@ -1785,7 +1785,7 @@ button { font-family: inherit; cursor: pointer; }
 }
 .cover-start {
   position: absolute;
-  /* the complete Start button (assets/images/cover_start.png), fully inside the frame —
+  /* the complete Start button (assets/images/cover_start.webp), fully inside the frame —
      the one painted in the cover art was cut off by the bottom edge and is painted out */
   left: 758px;
   top: 946px;
@@ -1794,7 +1794,7 @@ button { font-family: inherit; cursor: pointer; }
   padding: 0;
   border: none;
   border-radius: 56px;
-  background: url(../assets/images/cover_start.png) center / 100% 100% no-repeat;
+  background: url(../assets/images/cover_start.webp) center / 100% 100% no-repeat;
   cursor: pointer;
   overflow: hidden;
   z-index: 5;
@@ -1825,24 +1825,6 @@ button { font-family: inherit; cursor: pointer; }
   translate: 0 8px;
   filter: brightness(.92);
   box-shadow: 0 0 0 5px #fff, 0 3px 0 5px #2b0f6b, 0 6px 12px 2px rgba(0, 0, 0, .4);
-}
-/* little hand tapping the Start button: "tap here" */
-.cover-hand {
-  position: absolute;
-  left: 1100px;
-  top: 972px;
-  font-size: 92px;
-  line-height: 1;
-  z-index: 6;
-  pointer-events: none;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, .45));
-  opacity: 0;
-  animation: coverHandIn .4s ease-out 1.5s forwards, coverHandTap 1.2s ease-in-out 1.9s infinite;
-}
-@keyframes coverHandIn { to { opacity: 1; } }
-@keyframes coverHandTap {
-  0%, 100% { transform: translate(0, 0) rotate(-18deg); }
-  45%      { transform: translate(-12px, -18px) rotate(-18deg) scale(.92); }
 }
 
 
@@ -1948,7 +1930,7 @@ button { font-family: inherit; cursor: pointer; }
   animation: heartUp 3s ease-out forwards;
 }
 
-/* Open shelf (assets/images/shelf_open.png) fades in over the cupboard once the door slides away */
+/* Open shelf (assets/images/shelf_open.webp) fades in over the cupboard once the door slides away */
 .shelf-open {
   position: absolute;
   left: 1000px;
@@ -1996,7 +1978,12 @@ button { font-family: inherit; cursor: pointer; }
 }
 .glass-door.open { transform: translateX(800px); }
 #cam-reveal { transform-origin: 1920px 680px; transition: transform 1.4s cubic-bezier(.45, 0, .25, 1); }
-#cam-reveal.to-shells { transform: scale(1.32); }
+#cam-reveal.to-shells { transform: translateX(-310px); } /* slides left so Mr. Shells is fully in view */
+/* the reveal picture is 2240 px wide (crab painted out, scene extended to the right) */
+#screen-reveal .reveal-bg { right: auto; width: 2240px; background-size: 2240px 1080px; background-position: 0 0; }
+/* full Mr. Shells, standing behind the counter (clipped at its top edge) — lined up with where he was painted */
+.crab-full { position: absolute; left: 1510px; top: 501px; width: 648px; height: 344px; overflow: hidden; pointer-events: none; z-index: 2; }
+.crab-full img { display: block; width: 648px; height: 512px; }
 #screen-reveal .note { z-index: 4; }
 /* signboard drawn again in front, so the OPEN sign's chains disappear behind it */
 .cafe-signboard { position: absolute; left: 586px; top: 56px; width: 555px; pointer-events: none; z-index: 8; }
@@ -2215,9 +2202,9 @@ button { font-family: inherit; cursor: pointer; }
 .av2 .av-sheet.on { opacity: 1; }
 
 /* Story talkers (js/talkers.js) */
-.pk-sprite { width: 100%; aspect-ratio: 473 / 422; background: url(../assets/images/fish_talk_blink_strip.png) 0 0 / 800% 100% no-repeat; }
+.pk-sprite { width: 100%; aspect-ratio: 473 / 422; background: url(../assets/images/fish_talk_blink_strip.webp) 0 0 / 800% 100% no-repeat; }
 .pikoo-from-right .pk-sprite { transform: scaleX(-1); }
-.crab-mouth { position: absolute; display: none; background: url(../assets/images/crab_mouth_strip.png) 0 0 / 400% 100% no-repeat; pointer-events: none; z-index: 5; }
+.crab-mouth { position: absolute; display: none; background: url(../assets/images/crab_mouth_strip.webp) 0 0 / 400% 100% no-repeat; pointer-events: none; z-index: 5; }
 
 /* Instruction-panel circle: soft water backdrop + gentle tilt so Neeli sits nicely */
 .top-panel > .av-disc {
@@ -2247,7 +2234,7 @@ button { font-family: inherit; cursor: pointer; }
 /* Story Neeli uses the whale talk/blink sheet (frames already face the cupboard) */
 .neeli-actor .neeli-body.fig { transform: none; }
 .nl-sprite { width: 104.7%; margin-left: -2.3%; margin-top: -12%; aspect-ratio: 463 / 291;
-  background: url(../assets/images/neeli_talk_blink_strip.png) 0 0 / 800% 100% no-repeat; }
+  background: url(../assets/images/neeli_talk_blink_strip.webp) 0 0 / 800% 100% no-repeat; }
 
 /* Lock 3 tutorial */
 .order-card.tut-tap { animation: tutTap .35s ease; }

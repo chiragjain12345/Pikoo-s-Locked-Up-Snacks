@@ -629,18 +629,12 @@ function announceTitle() {
   setTimeout(done, 6000); // fallback if no end event
   return started;
 }
-// The title plays the moment the game opens. Browsers only allow sound before the first tap on
-// sites they already trust, so: try to play it as the loading screen ends — if that works the home
-// screen appears with the title playing; if the browser blocks it, the loading screen shows
-// "Tap to play", and that tap opens the home screen with the title playing straight away.
+// The game always opens straight onto the cover page. The title plays at once if the browser
+// allows sound before a tap; if not, the first tap anywhere on the cover plays it.
 window.TITLE_ON_OPEN = true;
 function openHome() {
-  if (!Sound.on) { hideLoader(); return; }
-  const slow = new Promise((r) => setTimeout(() => r(true), 2500)); // file still loading: just open
-  Promise.race([announceTitle(), slow]).then((played) => {
-    if (played) hideLoader();
-    else showTapToPlay(() => { audioCtx(); announceTitle(); setTimeout(startMusic, 1500); });
-  });
+  hideLoader();
+  announceTitle();
 }
 if (window.GAME_READY) openHome();
 else window.addEventListener('game-ready', openHome, { once: true });
@@ -655,7 +649,15 @@ setInterval(() => {
 
 // The narrator starts ~1 s after the first screen is fully showing
 let narrationDelay = 1000;
-coverStart.addEventListener('click', async () => {
+// The button bobs and sinks when pressed, so a press near its top edge used to end outside it
+// and no "click" fired. Now a press that starts on the button always starts the game on release.
+let coverPressed = false;
+coverStart.addEventListener('pointerdown', () => { coverPressed = true; });
+window.addEventListener('pointerup', () => { if (coverPressed) { coverPressed = false; startFromCover(); } });
+window.addEventListener('pointercancel', () => { coverPressed = false; });
+coverStart.addEventListener('click', () => startFromCover()); // keyboard (Enter / Space)
+async function startFromCover() {
+  if (coverStart.style.pointerEvents === 'none') return; // already starting
   sfx('click');
   coverStart.style.pointerEvents = 'none';
   narrationDelay = 2000; // the iris still covers the screen for ~1 s after the swap
@@ -663,7 +665,7 @@ coverStart.addEventListener('click', async () => {
     showScreen('screen-title', true);
     btnStart.click(); // straight into the narrator scene
   });
-});
+}
 
 btnStart.addEventListener('click', () => {
   sfx('click');
@@ -722,7 +724,7 @@ function setRings(list) {
 // Neeli's float-and-tap tour; returns its length in ms
 function neeliTour(actor) {
   const sc = 0.62;
-  const noseX = 690 * sc; // tip of her head (char_neeli.png, mirrored, 706px wide)
+  const noseX = 690 * sc; // tip of her head (char_neeli.webp, mirrored, 706px wide)
   const noseY = 100 * sc;
   const lockEdge = 1012;
   const tf = (x, y, k, r) => `translate(${x}px, ${y}px) scale(${k}) rotate(${r}deg)`;
@@ -921,8 +923,8 @@ function setMode(n) {
   currentLock = n;
   game.classList.toggle('mode-lock2', n === 2);
   game.classList.toggle('mode-lock3', n === 3);
-  // Lock 2 uses its own locker artwork (assets/images/lock2_board.png)
-  $('.lock-board').src = n === 2 ? 'assets/images/lock2_board.png?v=2' : 'assets/images/lock_board.png';
+  // Lock 2 uses its own locker artwork (assets/images/lock2_board.webp)
+  $('.lock-board').src = n === 2 ? 'assets/images/lock2_board.webp?v=2' : 'assets/images/lock_board.webp';
   $('.level-panel span').textContent = ['Lock 1 - The Pins', 'Lock 2 - The Code', 'Lock 3 - The Shell-Lights'][n - 1];
 }
 
@@ -997,7 +999,7 @@ function setInstruction(line, voId = line.id, onEnd) {
     return;
   }
   const isPikoo = line.who === 'Pikoo';
-  avatarEl.src = isPikoo ? 'assets/images/pikoo.png' : 'assets/images/neeli_avatar.png';
+  avatarEl.src = isPikoo ? 'assets/images/pikoo.webp' : 'assets/images/neeli_avatar.webp';
   avatarEl.classList.toggle('is-pikoo', isPikoo);
   chipEl.textContent = line.who;
   chipEl.style.background = SPEAKERS[line.who].color;
@@ -1086,7 +1088,7 @@ function buildPins() {
   pinsEl.innerHTML = '';
   state.pins = PIN_POS.map(([x, y], i) => {
     const img = document.createElement('img');
-    img.src = 'assets/images/pin.png';
+    img.src = 'assets/images/pin.webp';
     img.className = 'pin drop';
     img.alt = '';
     img.style.left = `${x}px`;
@@ -1294,7 +1296,7 @@ function popPin(i) {
       anim.cancel();
       const socket = state.sockets[i];
       const landed = document.createElement('img');
-      landed.src = 'assets/images/pin.png';
+      landed.src = 'assets/images/pin.webp';
       landed.className = 'socket-pin land';
       landed.alt = '';
       socket.appendChild(landed);

@@ -9,7 +9,7 @@ const REVEAL = [
   // The note already shows its words, so the bubble only says Neeli's reaction (her voice still reads the note)
   { id: 'end_neeli_read', who: 'Neeli', text: 'It was you, Pikoo!', vo: "'Snacks arranged and locked. - Pikoo.' It was you, Pikoo!", voiceOnly: true, at: { left: 133, top: 352, width: 600 } },
   { id: 'end_pikoo', who: 'Pikoo', text: 'OH. Right! I organised them this morning... and locked them... and forgot. Heh.', voiceOnly: true, flip: false, at: { left: 1380, top: 422, width: 520 } },
-  { id: 'end_shells', who: 'Mr. Shells', text: 'The cafe is saved!', flip: true, at: { left: 1130, top: 250, width: 520 } },
+  { id: 'end_shells', who: 'Mr. Shells', text: 'The cafe is saved!', flip: true, at: { left: 980, top: 250, width: 540 } },
 ];
 const HAPPY_VO = { id: 'end_narrator', who: 'Narrator', text: 'Bravo! The cafe can finally open. The doors swing open and we can see a happy crowd of sea-creatures enjoying their favorite snacks!' };
 const CROWD = ['🐠', '🐙', '🦀', '🐢', '🐡', '🦑', '🐬', '🦐', '🐟', '🦞', '🐳', '🪼'];
@@ -106,11 +106,13 @@ async function goReveal() {
   pk.classList.remove('guilty');
   revealBubble.classList.remove('show');
 
-  // (no camera push-in on Mr. Shells: the art is already a close-up, the zoom cut Neeli off)
-  await wait(400);
+  // Camera slides left so Mr. Shells is fully in view for his line
+  $('#cam-reveal').classList.add('to-shells');
+  sfx('whoosh');
+  await wait(1400);
   await sayIn(revealBubble, REVEAL[2]);
   sfx('correct');
-  starBurst(1700, 560, 14);
+  starBurst(1560, 600, 14); // over Mr. Shells (after the camera slide)
   await wait(STORY_PAUSE);
   goHappy();
 }

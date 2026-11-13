@@ -3,7 +3,7 @@
    Eyes are measured in each picture's own pixels; a skin-coloured
    eyelid slides down over each eye and back up.
    Neeli's animated GIF is played here frame by frame
-   (assets/images/neeli_sheet.png) so her eyelid can follow her eye.
+   (assets/images/neeli_sheet.webp) so her eyelid can follow her eye.
    ========================================================= */
 const BLINK_DATA = {"none": {"w": 1, "h": 1, "chars": []}, "cover": {"w": 1920, "h": 1080, "chars": [[[406, 679, 36, 33, "#fdd332"], [510, 667, 16, 27, "#fdd332"]], [[894, 532, 24, 23, "#f22d1b"], [954, 528, 24, 23, "#f22d1b"]], [[1475, 600, 31, 23, "#1e5fd0"]]]}, "title": {"w": 1920, "h": 1080, "chars": [[[863, 588, 15, 14, "#f22d1b"], [901, 586, 14, 14, "#f22d1b"]]]}, "story1": {"w": 1920, "h": 1080, "chars": [[[838, 724, 18, 27, "#f93425"]]]}, "cupboard": {"w": 1920, "h": 1080, "chars": [[[1817, 684, 31, 31, "#f22d1b"], [1889, 684, 32, 31, "#f22d1b"]]]}, "cafe": {"w": 1920, "h": 1080, "chars": [[[272, 636, 20, 23, "#edb941"], [207, 653, 25, 27, "#fdcf30"]], [[436, 670, 12, 19, "#fc740f"], [476, 682, 16, 21, "#fc740f"]], [[899, 529, 12, 15, "#f83321"], [871, 534, 14, 15, "#f83321"]], [[1110, 586, 13, 13, "#fbe1d6"], [1083, 582, 6, 10, "#fbe1d6"]], [[1607, 615, 18, 24, "#064ec3"]], [[1757, 749, 12, 18, "#c288fb"], [1804, 760, 14, 19, "#c990fc"]]]}, "pikoo": {"w": 780, "h": 702, "chars": [[[599, 327, 52, 46, "#fdc41d"], [750, 315, 20, 38, "#fdc41d"]]]}, "avatar": {"w": 1135, "h": 756, "chars": [[[686, 277, 80, 74, "#3c87fd"], [1050, 271, 46, 70, "#3c87fd"]]]}, "gif": {"w": 630, "h": 390, "rx": 21, "ry": 24, "frames": [[214, 198], [214, 195], [214, 191], [215, 188], [215, 184], [215, 179], [216, 174], [217, 172], [219, 166], [220, 161], [221, 157], [222, 152], [224, 148], [224, 144], [224, 142], [223, 142], [223, 142], [222, 143], [221, 145], [220, 148], [218, 152], [217, 157], [216, 164], [215, 171], [214, 178], [214, 182], [213, 185], [213, 188], [213, 190], [213, 193], [213, 195], [213, 196], [213, 198], [214, 198], [214, 199], [214, 199]], "color": "#1f5fc8"}, "neeli": {"w": 900, "h": 483, "chars": [[[326, 144, 31, 21, "#074dae"]]]}, "neeliStory": {"w": 706, "h": 362, "chars": [[[481, 121, 28, 21, "#014dcc"]]]}, "turtle": {"w": 155, "h": 128, "chars": [[[31, 26, 9, 9, "#fbefe6"], [13, 14, 5, 7, "#fbefe6"]]]}};
 
@@ -110,7 +110,7 @@ document.querySelectorAll('.neeli-body').forEach((b) => addBlinkLayer(b, 'neeli'
 }
 
 // Pikoo's eyes: a moving iris inside each eye white (used for her "shifty" glance)
-const PK_EYES = [[544, 279, 110, 97, '#f1eae3', 0], [726, 275, 46, 81, '#f8f5f3', 1]]; // in char_pikoo.png (780x702)
+const PK_EYES = [[544, 279, 110, 97, '#f1eae3', 0], [726, 275, 46, 81, '#f8f5f3', 1]]; // in char_pikoo.webp (780x702)
 function addPikooEyes(host, mirror) {
   if (!host) return;
   const layer = document.createElement('div');
