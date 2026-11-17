@@ -77,6 +77,7 @@ async function goReveal() {
   // The cupboard's glass door slides away, showing the open shelf behind it
   $('#shelf-open').classList.add('show');
   $('#glass-door').classList.add('open');
+  $('#cam-reveal').classList.add('wide'); // camera pulls back while the rack opens
   sfx('whoosh');
   // As the shelf opens, the note pops out and flutters down — together with the
   // narrator's "The locker clicks open and a note flies down." (voice only)
@@ -106,13 +107,11 @@ async function goReveal() {
   pk.classList.remove('guilty');
   revealBubble.classList.remove('show');
 
-  // Camera slides left so Mr. Shells is fully in view for his line
-  $('#cam-reveal').classList.add('to-shells');
-  sfx('whoosh');
-  await wait(1400);
+  // (the pulled-back camera already shows Mr. Shells in full)
+  await wait(300);
   await sayIn(revealBubble, REVEAL[2]);
   sfx('correct');
-  starBurst(1560, 600, 14); // over Mr. Shells (after the camera slide)
+  starBurst(1540, 630, 14); // over Mr. Shells (pulled-back camera)
   await wait(STORY_PAUSE);
   goHappy();
 }

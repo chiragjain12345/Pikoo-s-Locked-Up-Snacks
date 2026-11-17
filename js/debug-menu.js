@@ -2,127 +2,12 @@
    TEST MENU (hamburger, top-left) — for testing screens only.
    To remove: delete this file and its <script> line in index.html.
 
-   Must load BEFORE js/game.js: it tracks the game's timers so that
-   jumping between screens cancels anything still pending.
+   Must load BEFORE js/game.js (after js/nav.js, whose jump helpers it uses).
    Deep links also work, e.g. index.html#level-3, #hint, #win.
    ========================================================= */
 (() => {
-  /* ---------- Track game timers so a jump starts clean ---------- */
-  const _setTimeout = window.setTimeout.bind(window);
-  const _setInterval = window.setInterval.bind(window);
-  const timeouts = new Set();
-  const intervals = new Set();
-
-  window.setTimeout = (fn, ms, ...args) => {
-    const id = _setTimeout(() => {
-      timeouts.delete(id);
-      if (typeof fn === 'function') fn(...args);
-    }, ms);
-    timeouts.add(id);
-    return id;
-  };
-  window.setInterval = (fn, ms, ...args) => {
-    const id = _setInterval(fn, ms, ...args);
-    intervals.add(id);
-    return id;
-  };
-  const clearTimers = () => {
-    timeouts.forEach((id) => clearTimeout(id));
-    intervals.forEach((id) => clearInterval(id));
-    timeouts.clear();
-    intervals.clear();
-  };
-
-  /* ---------- Reset every screen to its starting state ---------- */
-  function reset() {
-    clearTimers();
-    stopVoice();
-    Idle.clear();
-    const q = (s) => document.querySelector(s);
-    const qa = (s) => document.querySelectorAll(s);
-
-    q('#transition').classList.remove('open', 'close');
-    q('.trans-bubbles').innerHTML = '';
-    const zw = q('#zoom-wrap');
-    zw.style.transition = 'none';
-    zw.classList.remove('zooming');
-    q('#cam-title').style.transition = 'none';
-    q('#cam-title').classList.remove('focus');
-    void zw.offsetWidth;
-    zw.style.transition = '';
-    q('#cam-title').style.transition = '';
-
-    setRings([]);
-    qa('.speech').forEach((b) => { b.classList.remove('show'); delete b.dataset.who; });
-    qa('.ost').forEach((o) => o.classList.remove('show'));
-    qa('.pulse').forEach((b) => b.classList.remove('pulse'));
-    q('#btn-start').classList.remove('btn-gone');
-    q('#cover-start').style.pointerEvents = '';
-    q('#next-title').classList.add('btn-gone');
-    q('#next-story2').classList.add('btn-gone');
-    q('#hint').classList.remove('show');
-    q('#win').classList.remove('show');
-    q('#screen-game').classList.remove('enter');
-    q('#pikoo-actor').classList.remove('in');
-    q('#neeli-actor').getAnimations().forEach((a) => a.cancel());
-    q('#btn-win-next').classList.add('btn-gone');
-    resetShelf(1);
-    if (typeof resetEnding === 'function') resetEnding();
-    bulbsEl.classList.remove('all-lit');
-    hideHand();
-  }
-
-  /* Game screen with the first `released` pins already in their sockets */
-  function gameAt(released) {
-    showScreen('screen-game', true);
-    startGame(false);
-    clearTimers(); // drop the how-to-play setup
-    btnBegin.classList.add('hidden');
-    state.phase = 'play';
-    for (let i = 0; i < released; i++) {
-      state.pins[i].style.visibility = 'hidden';
-      const img = document.createElement('img');
-      img.src = 'assets/images/pin.webp';
-      img.className = 'socket-pin';
-      img.alt = '';
-      state.sockets[i].appendChild(img);
-      state.sockets[i].classList.add('lit');
-    }
-    progressText.textContent = `${released} / 7 pins released`;
-  }
-
-  /* Lock 2 game screen with the first `cracked` codes already done */
-  function lock2At(cracked) {
-    showScreen('screen-game', true);
-    startLock2(false);
-    clearTimers(); // drop the how-to-play setup
-    btnBegin.classList.add('hidden');
-    L2.phase = 'play';
-    for (let i = 0; i < cracked; i++) {
-      const g = document.createElement('div');
-      g.className = 'gem';
-      state.sockets[i].appendChild(g);
-      state.sockets[i].classList.add('lit');
-    }
-    progressText.textContent = `${cracked} / ${CODES.length} codes cracked`;
-  }
-
-  /* Lock 3 game screen with the first `lit` bulbs already lit */
-  function lock3At(lit) {
-    showScreen('screen-game', true);
-    startLock3(false);
-    clearTimers(); // drop the how-to-play setup
-    btnBegin.classList.add('hidden');
-    L3.phase = 'play';
-    for (let i = 0; i < lit; i++) {
-      bulbsEl.children[i].classList.add('lit');
-      const g = document.createElement('div');
-      g.className = 'gem gold';
-      state.sockets[i].appendChild(g);
-      state.sockets[i].classList.add('lit');
-    }
-    progressText.textContent = `${lit} / 7 shell-bulbs lit`;
-  }
+  // timer tracking, reset() and the gameAt/lock2At/lock3At helpers live in js/nav.js
+  const { reset, gameAt, lock2At, lock3At } = window.Nav;
 
   /* ---------- Screen list ---------- */
   let ITEMS = [];
@@ -184,11 +69,11 @@
 
   /* ---------- UI ---------- */
   const css = `
-  #dbg-btn{position:fixed;left:12px;top:12px;z-index:9999;width:52px;height:52px;border-radius:14px;
+  #dbg-btn{position:fixed;left:12px;bottom:12px;z-index:9999;width:52px;height:52px;border-radius:14px;
     border:3px solid #fff;background:rgba(20,12,60,.85);color:#fff;font-size:28px;line-height:1;cursor:pointer;
     box-shadow:0 4px 14px rgba(0,0,0,.4);font-family:system-ui,sans-serif}
   #dbg-btn:hover{background:rgba(60,40,150,.95)}
-  #dbg-panel{position:fixed;left:12px;top:72px;z-index:9999;width:310px;max-height:calc(100vh - 90px);overflow:auto;
+  #dbg-panel{position:fixed;left:12px;bottom:72px;z-index:9999;width:310px;max-height:calc(100vh - 90px);overflow:auto;
     background:#fff;border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.45);padding:8px 0;
     font:14px/1.3 system-ui,sans-serif;color:#222;display:none}
   #dbg-panel.open{display:block}

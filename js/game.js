@@ -66,6 +66,8 @@ const WRONG_1 = { id: 'wrong_1', who: 'Neeli', text: 'Oops! Try Again.', voiceOn
 const WRONG_2 = { id: 'wrong_2_hint', who: 'Neeli', text: 'Compare the number of digits first. If the number of digits is the same, compare the digits from the left until they are different.' };
 const IDLE = { id: 'idle', who: 'Neeli', text: 'Take your time - tap the one you think is right.' };
 const IDLE_DRAG = { id: 'idle_drag', who: 'Neeli', text: 'Take your time - drag the digit shells into the windows.' };
+// Lock 2: every window of the row is filled but Enter isn't pressed yet
+const IDLE_ENTER = { id: 'l2_press_enter', who: 'Neeli', text: 'Then press Enter.' };
 
 const LEVELS = [
   { nums: ['6,540', '48,210'],     fb: { who: 'Pikoo', text: 'Yayy! First pin loose - Great!' } },
@@ -105,7 +107,7 @@ const AUDIO_FILES = {
     'howto_pikoo', 'instruction', 'instruction_long', 'wrong_1', 'wrong_2_hint', 'idle', 'idle_drag', 'l1_hand',
     'l1_correct', 'l2_correct', 'l3_correct', 'l4_correct', 'l5_correct', 'l6_correct', 'l7_correct',
     'l1_done_neeli', 'l1_done_pikoo', 'l2_done_neeli', 'l2_done_pikoo',
-    'l2_howto_pikoo', 'l2_howto_neeli', 'l2_round1', 'l2_round1_drag', 'l2_round2_drag', 'l2_round3_drag', 'l2_round4_drag', 'l2_round2', 'l2_round3', 'l2_round4', 'l2_hint_big', 'l2_hint_small', 'l2_hint_zero', 'l2_hint_zero4', 'l2_hint_zero6', 'l2_hand', 'l2_show', 'l2_your_turn',
+    'l2_howto_pikoo', 'l2_howto_neeli', 'l2_round1', 'l2_round1_drag', 'l2_round2_drag', 'l2_round3_drag', 'l2_round4_drag', 'l2_round2', 'l2_round3', 'l2_round4', 'l2_hint_big', 'l2_hint_small', 'l2_hint_zero', 'l2_hint_zero4', 'l2_hint_zero6', 'l2_hand', 'l2_press_enter', 'l2_show', 'l2_your_turn',
     'l2_round1_big_ok', 'l2_round2_big_ok', 'l2_round3_big_ok', 'l2_round4_big_ok',
     'l2_round1_correct', 'l2_round2_correct', 'l2_round3_correct', 'l2_round4_correct',
     'l3_howto_neeli', 'l3_tut_1', 'l3_tut_2', 'l3_tut_3', 'l3_tut_4', 'l3_tut_5',
@@ -226,11 +228,9 @@ function speakTTS(who, text, onStart, onEnd) {
 
 function setSound(on) {
   Sound.on = on;
-  $('#sound-toggle').textContent = on ? '🔊' : '🔇';
   setMusicOn(on);
   if (!on) stopVoice();
 }
-$('#sound-toggle').addEventListener('click', (e) => { e.stopPropagation(); setSound(!Sound.on); });
 
 
 /* ---------------- Inactivity ---------------- */
@@ -278,9 +278,10 @@ function resumeAllAudio() {
   if (lastSpeechAt) lastSpeechAt += away;
   if (window.GamePause) GamePause.resume();
 }
-document.addEventListener('visibilitychange', () => (document.hidden ? pauseAllAudio() : resumeAllAudio()));
+// (a Pause-button pause stays paused when the player comes back — only Resume ends it)
+document.addEventListener('visibilitychange', () => (document.hidden ? pauseAllAudio() : !window.MANUAL_PAUSE && resumeAllAudio()));
 window.addEventListener('blur', pauseAllAudio);
-window.addEventListener('focus', () => { if (!document.hidden) resumeAllAudio(); });
+window.addEventListener('focus', () => { if (!document.hidden && !window.MANUAL_PAUSE) resumeAllAudio(); });
 
 const Idle = {
   timer: null,

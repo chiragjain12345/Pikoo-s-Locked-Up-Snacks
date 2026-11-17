@@ -262,7 +262,9 @@ function startLock2(withEntrance) {
   board.classList.remove('unlocked', 'shine');
   shellsEl.innerHTML = '';
   trayEl.style.display = 'none';
+  showPanelText(''); // no leftover lock-1 line: the panel comes in once, with this lock's question
   layoutRound(0);
+  L2.laidOut = 0; // round 1's windows are already on the board — loadCode(0) keeps them
   btnEnter.classList.add('btn-gone');
 
   if (withEntrance) {
@@ -427,6 +429,7 @@ function refreshWindows() {
   tagEl2.classList.toggle('waiting', waiting && L2.rows && L2.rows.length > 1);
   const row = activeRow();
   btnEnter.classList.toggle('disabled', !row || row.idx.some((w) => !L2.slots[w]));
+  if (!row || row.idx.some((w) => !L2.slots[w])) btnEnter.classList.remove('idle'); // not complete: no Enter glow
 }
 
 // Put `sh` into window `target` (or back to the tray when null); a shell already in that window returns to the tray
@@ -534,7 +537,8 @@ function loadCode(i, intro) {
   });
   L2.windows.forEach((w) => w.el.classList.remove('right', 'wrong'));
   setTimeout(() => {
-    layoutRound(i);
+    if (L2.laidOut === i) L2.laidOut = null; // already built: don't pop the windows in twice
+    else layoutRound(i);
     L2.active = 0;
     buildShells(i);
     btnEnter.classList.remove('btn-gone');
@@ -553,8 +557,18 @@ function loadCode(i, intro) {
 function armIdle2(ms = IDLE_MS) {
   Idle.arm(ms, () => {
     if (L2.busy || L2.phase !== 'play') return;
-    showNudge(IDLE_DRAG);
-    L2.shells.forEach((s) => { if (s.slot === null) s.el.classList.add('idle'); });
+    const row = activeRow();
+    if (row && row.idx.every((w) => L2.slots[w])) {
+      // the number is built but not checked: remind to press Enter (not to drag again)
+      showNudge(IDLE_ENTER);
+      handEl.style.left = `${ENTER_X + 40}px`;
+      handEl.style.top = `${ENTER_TOP + 40}px`;
+      handEl.classList.add('show');
+      btnEnter.classList.add('idle');
+    } else {
+      showNudge(IDLE_DRAG);
+      L2.shells.forEach((s) => { if (s.slot === null) s.el.classList.add('idle'); });
+    }
     armIdle2(IDLE_REPEAT_MS);
   });
 }
@@ -566,6 +580,7 @@ btnEnter.addEventListener('click', () => {
   if (L2.busy || L2.phase !== 'play') return;
   sfx('click');
   hideHand();
+  btnEnter.classList.remove('idle');
   const row = activeRow();
   if (row.idx.some((w) => !L2.slots[w])) {
     row.idx.forEach((w) => {

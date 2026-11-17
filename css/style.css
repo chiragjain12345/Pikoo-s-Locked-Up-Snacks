@@ -111,19 +111,6 @@ button { font-family: inherit; cursor: pointer; }
   50% { transform: scale(1.09); filter: brightness(1.12) drop-shadow(0 0 22px rgba(255, 220, 120, .9)); }
 }
 
-.sound-toggle {
-  position: absolute;
-  right: 18px;
-  top: 14px;
-  z-index: 60;
-  width: 68px;
-  height: 68px;
-  border-radius: 50%;
-  border: 4px solid #fff3d6;
-  background: linear-gradient(180deg, #ffbd45, #f58a0b);
-  font-size: 30px;
-  box-shadow: 0 5px 0 var(--orange-dark);
-}
 
 /* ---------- Title screen ---------- */
 .slow-zoom {
@@ -402,9 +389,9 @@ button { font-family: inherit; cursor: pointer; }
   transform-origin: 1068px 300px;
 }
 .zoom-wrap.zooming {
-  transition: transform 1.7s cubic-bezier(.7, 0, .3, 1), filter 1.7s ease-in;
+  /* transform only: a full-screen brightness filter here made tablets stutter */
+  transition: transform 1.7s cubic-bezier(.7, 0, .3, 1);
   transform: translate(-108px, 240px) scale(2.6); /* lock centred, balanced zoom (was 7×) */
-  filter: brightness(1.25) saturate(1.2);
 }
 
 /* ---------- Story → game transition ---------- */
@@ -1857,7 +1844,7 @@ button { font-family: inherit; cursor: pointer; }
    Smoothness: GPU layers for moving things, and pause all
    CSS animations on screens that aren't showing
    ========================================================= */
-.bg, .cam, .zoom-wrap, .bubble, .walker, .walker i, .speech,
+.bg, .bubble, .walker, .walker i, .speech,
 .actor-pikoo, .pikoo-from-right, .neeli-actor, .neeli-actor img,
 .cover-pikoo, .cover-whale, .pin, .shell, .order-card, .bulb, .choice,
 .cf, .fx-star, .tap-bubble, .open-sign, .note, .door {
@@ -1977,10 +1964,11 @@ button { font-family: inherit; cursor: pointer; }
   box-shadow: 0 2px 4px rgba(0, 0, 0, .3);
 }
 .glass-door.open { transform: translateX(800px); }
-#cam-reveal { transform-origin: 1920px 680px; transition: transform 1.4s cubic-bezier(.45, 0, .25, 1); }
-#cam-reveal.to-shells { transform: translateX(-310px); } /* slides left so Mr. Shells is fully in view */
+#cam-reveal { transform-origin: 0 0; transition: transform 2.2s cubic-bezier(.45, 0, .25, 1); }
+/* camera pulls back as the rack opens: the whole scene (characters, rack, Mr. Shells) in frame */
+#cam-reveal.wide, #cam-reveal.to-shells { transform: scale(.84); }
 /* the reveal picture is 2240 px wide (crab painted out, scene extended to the right) */
-#screen-reveal .reveal-bg { right: auto; width: 2240px; background-size: 2240px 1080px; background-position: 0 0; }
+#screen-reveal .reveal-bg { right: auto; bottom: auto; width: 2300px; height: 1290px; background-size: 2300px 1290px; background-position: 0 0; }
 /* full Mr. Shells, standing behind the counter (clipped at its top edge) — lined up with where he was painted */
 .crab-full { position: absolute; left: 1510px; top: 501px; width: 648px; height: 344px; overflow: hidden; pointer-events: none; z-index: 2; }
 .crab-full img { display: block; width: 648px; height: 512px; }
@@ -2258,7 +2246,7 @@ button { font-family: inherit; cursor: pointer; }
 #screen-game.l2-dual .shell.in-slot { transform: scale(.95); }
 
 /* Final video over the open cafe */
-.end-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000;
+.end-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: transparent; /* never a black box */
   opacity: 0; pointer-events: none; z-index: 8; transition: opacity 1s ease; }
 .end-video.show { opacity: 1; }
 #screen-happy .btn-next { z-index: 9; }
@@ -2353,3 +2341,49 @@ button { font-family: inherit; cursor: pointer; }
 }
 .loader-play:active { translate: 0 6px; box-shadow: 0 2px 0 #9a4a00, 0 6px 14px rgba(0, 0, 0, .4); }
 @keyframes loaderPlay { 0%, 100% { scale: 1; } 50% { scale: 1.06; } }
+
+/* ---------- Back + Pause buttons (js/nav.js), top-right; hidden on the cover ---------- */
+.nav-btns { position: absolute; right: 18px; top: 14px; z-index: 60; display: flex; gap: 14px; }
+#stage.on-cover .nav-btns { display: none; }
+.nav-btn {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 4px solid #fff3d6;
+  background: linear-gradient(180deg, #ffbd45, #f58a0b);
+  box-shadow: 0 5px 0 var(--orange-dark), 0 8px 14px rgba(0, 0, 0, .3);
+  color: #fff;
+  font-size: 30px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  padding: 0 4px 0 0;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, .2);
+}
+.nav-btn:active { translate: 0 3px; box-shadow: 0 2px 0 var(--orange-dark), 0 4px 8px rgba(0, 0, 0, .3); }
+#btn-pause { padding: 0; }
+.pause-bars { display: flex; gap: 8px; }
+.pause-bars i { width: 9px; height: 28px; border-radius: 3px; background: #fff; box-shadow: 0 2px 0 rgba(0, 0, 0, .2); }
+.pause-card {
+  position: absolute;
+  inset: 0;
+  z-index: 70;
+  display: none;
+  place-items: center;
+  background: rgba(30, 16, 80, .72); /* plain tint: a blur filter is slow on low-end laptops */
+}
+.pause-card.show { display: grid; }
+.pause-box {
+  padding: 56px 96px 64px;
+  border-radius: 40px;
+  background: linear-gradient(180deg, var(--cream) 0%, var(--cream-2) 100%);
+  border: 8px solid var(--orange);
+  box-shadow: inset 0 0 0 4px #ffd27a, 0 12px 0 var(--orange-dark), 0 24px 50px rgba(0, 0, 0, .45);
+  text-align: center;
+}
+.pause-title { font: 800 72px/1 'Poppins', sans-serif; color: var(--brown); margin-bottom: 36px; }
+#btn-resume { font-size: 44px; padding: 16px 64px 20px; }
+
+/* Lock 2: Enter glows when the number is built but not checked yet (idle reminder) */
+.btn-enter.idle { animation: enterNudge 1s ease-in-out infinite; }
+@keyframes enterNudge { 0%, 100% { scale: 1; } 50% { scale: 1.1; } }

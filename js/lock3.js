@@ -64,9 +64,12 @@ function buildBulbs() {
 }
 
 function setOrderTag(b) {
-  orderTag.innerHTML = b.order === 'asc'
+  const html = b.order === 'asc'
     ? 'Ascending order <span>(smallest to biggest)</span>'
     : 'Descending order <span>(biggest to smallest)</span>';
+  if (orderTag.innerHTML === html && orderTag.dataset.set) return; // same tag: no second pop-in
+  orderTag.dataset.set = '1';
+  orderTag.innerHTML = html;
   orderTag.classList.toggle('smallest', b.order === 'desc');
   orderTag.classList.remove('swap');
   void orderTag.offsetWidth;
@@ -90,6 +93,8 @@ function startLock3(withEntrance) {
   slotsEl.innerHTML = '';
   cardsEl.innerHTML = '';
   $('#fly-note').classList.remove('fall');
+  delete orderTag.dataset.set;
+  showPanelText(''); // no leftover lock-2 line
   setOrderTag(BULBS[0]);
 
   if (withEntrance) {

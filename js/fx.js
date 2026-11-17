@@ -82,7 +82,8 @@ function seaPiece(x, delay) {
 
 function confettiBurst() {
   if (!window.gsap) { legacyConfettiBurst(); return; }
-  const N = 46;                                   // subtle: a light shower, not a blizzard
+  // subtle: a light shower, not a blizzard — lighter still on tablets/phones
+  const N = window.matchMedia && matchMedia('(pointer: coarse)').matches ? 26 : 46;
   for (let i = 0; i < N; i++) seaPiece(40 + Math.random() * 1840, Math.random() * 1.6);
 }
 
