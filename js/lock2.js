@@ -126,7 +126,6 @@ async function lockCompleteCard(n) {
 
   throwConfetti();
   win.classList.add('show');
-  sfx('clap');
   sfx('win');
   [400, 700, 1000].forEach((d) => setTimeout(() => sfx('star'), d));
 
@@ -215,7 +214,6 @@ async function goShelf(n = 1) {
   await wait(700);
   // Lock is open: confetti + applause — and Pikoo already swims in while Neeli finishes
   confettiBurst();
-  sfx('clap');
   sfx('win');
   const pk = $('#pikoo-shelf');
   pk.classList.add('in');

@@ -66,7 +66,6 @@ async function goReveal() {
   sfx('whoosh');
   await wait(700);
   confettiBurst();
-  sfx('clap');
   sfx('win');
   await wait(1600);
 

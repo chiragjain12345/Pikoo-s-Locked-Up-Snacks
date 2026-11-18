@@ -444,7 +444,6 @@ async function finale3() {
   });
   await wait(1200);
   confettiBurst();
-  sfx('clap');
   sfx('win');
   await voDone;
   await wait(1000);

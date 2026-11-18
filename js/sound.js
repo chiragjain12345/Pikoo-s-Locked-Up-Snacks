@@ -226,6 +226,101 @@ const SYNTH = {
 };
 let _starStep = 0;
 
+/* ---------------- Celebration sounds, made ahead of time ----------------
+   The applause and the fanfare used to be built live at the moment a lock opened:
+   ~150 little noise bursts + brass, all at once, while the confetti animates — tablets
+   stuttered. They're now rendered once in the background (OfflineAudioContext) while the
+   cover page shows, with a fuller, clearer applause and a soft room echo; at the win the
+   finished sound is simply played, which costs almost nothing. */
+const PRE = {};                      // name -> rendered AudioBuffer
+const PRE_VOL = { clap: 0.9, win: 0.85 };
+const LIVE = { clap: SYNTH.clap, win: SYNTH.win };
+
+// clearer applause: 10 clappers, each with their own pitch, tight crisp claps
+function hqApplause() {
+  const t0 = _ctx.currentTime;
+  for (let p = 0; p < 10; p++) {
+    const centre = 900 + p * 160 + Math.random() * 120;   // every clapper sounds a little different
+    const pan = _ctx.createStereoPanner ? _ctx.createStereoPanner() : null;
+    const out = _ctx.createGain();
+    out.gain.value = 0.55 + Math.random() * 0.3;
+    if (pan) { pan.pan.value = Math.random() * 1.4 - 0.7; out.connect(pan).connect(_sfxBus); } else out.connect(_sfxBus);
+    let s = Math.random() * 0.18;
+    while (s < 2.6) {
+      const fade = s < 0.25 ? s / 0.25 : 1 - Math.max(0, s - 1.6) / 1.1; // swell in, die away
+      if (fade > 0.05) {
+        noise(t0 + s, 0.045, 0.42 * fade, { from: centre, q: 1.6, out });
+        noise(t0 + s + 0.004, 0.02, 0.25 * fade, { type: 'highpass', from: 3500, q: 0.7, out }); // the crisp "snap"
+      }
+      s += 0.12 + Math.random() * 0.07;
+    }
+  }
+}
+
+function roomEcho(ctx, sec = 1.1) {
+  const len = Math.floor(ctx.sampleRate * sec);
+  const ir = ctx.createBuffer(2, len, ctx.sampleRate);
+  for (let c = 0; c < 2; c++) {
+    const d = ir.getChannelData(c);
+    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3.2);
+  }
+  const conv = ctx.createConvolver();
+  conv.buffer = ir;
+  return conv;
+}
+
+async function prerender(name, build, sec, wet) {
+  if (PRE[name] || !window.OfflineAudioContext) return;
+  const SR = 44100;
+  const off = new OfflineAudioContext(2, Math.ceil(sec * SR), SR);
+  const bus = off.createGain();
+  const dry = off.createGain(); dry.gain.value = 1;
+  const send = off.createGain(); send.gain.value = wet;
+  const echo = roomEcho(off);
+  bus.connect(dry).connect(off.destination);
+  bus.connect(send).connect(echo).connect(off.destination);
+  const keepCtx = _ctx, keepBus = _sfxBus;
+  _ctx = off; _sfxBus = bus;                       // the instruments draw into the offline render
+  try { build(); } finally { _ctx = keepCtx; _sfxBus = keepBus; }
+  const buf = await off.startRendering();
+  let peak = 0;                                    // even, clean level
+  for (let c = 0; c < buf.numberOfChannels; c++) {
+    const d = buf.getChannelData(c);
+    for (let i = 0; i < d.length; i++) peak = Math.max(peak, Math.abs(d[i]));
+  }
+  if (peak > 0) for (let c = 0; c < buf.numberOfChannels; c++) {
+    const d = buf.getChannelData(c);
+    for (let i = 0; i < d.length; i++) d[i] *= 0.9 / peak;
+  }
+  PRE[name] = buf;
+}
+
+function playPre(name) {
+  const buf = PRE[name];
+  if (!buf || !_ctx) return false;
+  const src = _ctx.createBufferSource();
+  src.buffer = buf;
+  const g = _ctx.createGain();
+  g.gain.value = PRE_VOL[name] || 1;
+  src.connect(g).connect(_sfxBus);
+  src.start();
+  return true;
+}
+
+// at the win: play the ready-made sound (if it somehow isn't ready yet, a light live version)
+SYNTH.clap = () => { if (!playPre('clap')) { const t = _ctx.currentTime; for (let i = 0; i < 6; i++) clapAt(t + i * 0.18, 0.35); } };
+SYNTH.win = () => { if (!playPre('win')) LIVE.win(); };
+
+// make them while the cover page shows (after the loading screen, when nothing else is busy)
+function prerenderCelebration() {
+  // (the applause was removed from the confetti moments; only the fanfare is used)
+  const go = () => prerender('win', LIVE.win, 2.6, 0.18)
+    .catch(() => { /* old browser: the live sounds are used */ });
+  (window.requestIdleCallback || ((f) => setTimeout(f, 300)))(go);
+}
+if (window.GAME_READY) prerenderCelebration();
+else window.addEventListener('game-ready', prerenderCelebration, { once: true });
+
 /* ---------------- Background tune ----------------
    A gentle 8-bar marimba loop in C major pentatonic, rendered once
    and looped — no timers needed. */
